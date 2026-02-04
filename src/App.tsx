@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import Docs from "./pages/Docs";
 import Chat from "./pages/Chat";
+import ImageGeneration from "./pages/ImageGeneration";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,8 @@ const App = () => (
           <Route path="/docs" element={<Docs />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/dashboard/text/*" element={<Chat />} />
+          <Route path="/dashboard/images" element={<ImageGeneration />} />
+          <Route path="/dashboard/images/*" element={<ImageGeneration />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
