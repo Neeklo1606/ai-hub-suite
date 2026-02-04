@@ -5,10 +5,10 @@ import { Zap, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const navLinks = [
-  { label: "Модели", href: "#models" },
-  { label: "Цены", href: "#pricing" },
-  { label: "API", href: "#api" },
-  { label: "Документация", href: "#docs" },
+  { label: "Модели", href: "#models", isAnchor: true },
+  { label: "Цены", href: "#pricing", isAnchor: true },
+  { label: "API", href: "/docs", isAnchor: false },
+  { label: "Документация", href: "/docs", isAnchor: false },
 ];
 
 export function Header() {
@@ -29,13 +29,23 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {link.label}
-              </a>
+              link.isAnchor ? (
+                <a
+                  key={index}
+                  href={link.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={index}
+                  to={link.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
           </nav>
 
@@ -74,14 +84,25 @@ export function Header() {
           >
             <nav className="container px-4 py-4 flex flex-col gap-4">
               {navLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
+                link.isAnchor ? (
+                  <a
+                    key={index}
+                    href={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={index}
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 <Link to="/dashboard">

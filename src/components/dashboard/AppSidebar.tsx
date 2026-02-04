@@ -17,6 +17,8 @@ import {
   User,
   ChevronsUpDown,
   Sparkles,
+  Shield,
+  FileText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -96,6 +98,8 @@ const sidebarItems: SidebarItem[] = [
   },
   { icon: BarChart3, label: "Аналитика", href: "/dashboard/analytics" },
   { icon: Settings, label: "Настройки", href: "/dashboard/settings" },
+  { icon: Shield, label: "Админ", href: "/admin", badge: "Admin" },
+  { icon: FileText, label: "Документация", href: "/docs" },
 ];
 
 interface CollapsibleItemProps {
@@ -108,33 +112,44 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
   const [isOpen, setIsOpen] = useState(isActive);
   const hasChildren = item.children && item.children.length > 0;
 
+  const buttonClasses = cn(
+    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+    isActive
+      ? "bg-sidebar-accent text-sidebar-accent-foreground"
+      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+  );
+
+  const content = (
+    <>
+      <item.icon className="w-5 h-5 shrink-0" />
+      <span className="flex-1 text-left">{item.label}</span>
+      {item.badge && (
+        <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/20 text-primary">
+          {item.badge}
+        </span>
+      )}
+      {hasChildren && (
+        <ChevronDown
+          className={cn(
+            "w-4 h-4 transition-transform",
+            isOpen && "rotate-180"
+          )}
+        />
+      )}
+    </>
+  );
+
   return (
     <div>
-      <button
-        onClick={() => hasChildren && setIsOpen(!isOpen)}
-        className={cn(
-          "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-          isActive
-            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-        )}
-      >
-        <item.icon className="w-5 h-5 shrink-0" />
-        <span className="flex-1 text-left">{item.label}</span>
-        {item.badge && (
-          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/20 text-primary">
-            {item.badge}
-          </span>
-        )}
-        {hasChildren && (
-          <ChevronDown
-            className={cn(
-              "w-4 h-4 transition-transform",
-              isOpen && "rotate-180"
-            )}
-          />
-        )}
-      </button>
+      {hasChildren ? (
+        <button onClick={() => setIsOpen(!isOpen)} className={buttonClasses}>
+          {content}
+        </button>
+      ) : (
+        <Link to={item.href} className={buttonClasses}>
+          {content}
+        </Link>
+      )}
 
       <AnimatePresence initial={false}>
         {hasChildren && isOpen && (
