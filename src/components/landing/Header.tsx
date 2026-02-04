@@ -51,10 +51,10 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <Link to="/dashboard">
+            <Link to="/login">
               <Button variant="ghost">Войти</Button>
             </Link>
-            <Link to="/dashboard">
+            <Link to="/register">
               <Button variant="hero">Начать бесплатно</Button>
             </Link>
           </div>
@@ -105,10 +105,10 @@ export function Header() {
                 )
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                <Link to="/dashboard">
+                <Link to="/login">
                   <Button variant="ghost" className="w-full">Войти</Button>
                 </Link>
-                <Link to="/dashboard">
+                <Link to="/register">
                   <Button variant="hero" className="w-full">Начать бесплатно</Button>
                 </Link>
               </div>
