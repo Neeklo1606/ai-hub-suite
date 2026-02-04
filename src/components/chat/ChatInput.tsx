@@ -10,9 +10,60 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
+// Типы для Web Speech API
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  onend: () => void;
+}
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string;
+  message: string;
+}
+
+interface SpeechRecognitionResultList {
+  length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+  isFinal: boolean;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
+  }
+}
+
 export function ChatInput({ onSend, isLoading, placeholder = "Введите сообщение..." }: ChatInputProps) {
   const [message, setMessage] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const finalTranscriptRef = useRef<string>("");
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -20,6 +71,113 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
     }
   }, [message]);
+
+  // Инициализация Speech Recognition
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      console.warn("Speech Recognition не поддерживается в этом браузере");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "ru-RU";
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interimTranscript = "";
+      let finalTranscript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript + " ";
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      if (finalTranscript) {
+        // Добавляем финальный текст к уже распознанному
+        finalTranscriptRef.current += finalTranscript;
+        setMessage((prev) => {
+          // Удаляем промежуточные результаты и добавляем финальный текст
+          const baseText = finalTranscriptRef.current;
+          return baseText.trim();
+        });
+      } else if (interimTranscript) {
+        // Показываем промежуточный результат поверх финального текста
+        setMessage((prev) => {
+          const baseText = finalTranscriptRef.current;
+          return (baseText + interimTranscript).trim();
+        });
+      }
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error("Ошибка распознавания речи:", event.error);
+      if (event.error === "no-speech") {
+        // Нет речи - это нормально, просто останавливаем
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
+        }
+        setIsRecording(false);
+      } else if (event.error === "not-allowed") {
+        alert("Разрешите доступ к микрофону в настройках браузера");
+        if (recognitionRef.current) {
+          recognitionRef.current.stop();
+        }
+        setIsRecording(false);
+      }
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  const handleStartRecording = () => {
+    if (!recognitionRef.current) {
+      alert("Распознавание речи не поддерживается в этом браузере");
+      return;
+    }
+
+    try {
+      // Сбрасываем финальный текст при начале новой записи
+      finalTranscriptRef.current = message;
+      recognitionRef.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error("Ошибка при запуске записи:", error);
+      setIsRecording(false);
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (recognitionRef.current && isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handleToggleRecording = () => {
+    if (isRecording) {
+      handleStopRecording();
+    } else {
+      handleStartRecording();
+    }
+  };
 
   const handleSubmit = () => {
     if (message.trim() && !isLoading) {
@@ -65,7 +223,13 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 text-muted-foreground hover:text-foreground"
+              onClick={handleToggleRecording}
+              disabled={isLoading}
+              className={cn(
+                "h-9 w-9 text-muted-foreground hover:text-foreground transition-all",
+                isRecording && "text-red-500 hover:text-red-600 animate-pulse"
+              )}
+              title={isRecording ? "Остановить запись" : "Начать запись голоса"}
             >
               <Mic className="w-5 h-5" />
             </Button>
