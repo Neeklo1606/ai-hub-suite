@@ -62,18 +62,18 @@ const quickActions = [
 export default function Dashboard() {
   return (
     <DashboardLayout>
-      <div className="p-6 lg:p-8 max-w-7xl mx-auto">
+      <div className="p-4 pt-16 sm:p-6 lg:p-8 lg:pt-8 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold">Добро пожаловать! 👋</h1>
-            <p className="text-muted-foreground mt-1">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">Добро пожаловать! 👋</h1>
+            <p className="text-muted-foreground mt-1 text-sm sm:text-base">
               Начните работу с любой AI-моделью
             </p>
           </div>
           
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 lg:w-64">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
@@ -81,7 +81,7 @@ export default function Dashboard() {
                 className="w-full pl-10 pr-4 py-2 rounded-lg bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
-            <Button variant="hero">
+            <Button variant="hero" className="w-full sm:w-auto">
               <Plus className="w-4 h-4" />
               Новый чат
             </Button>
@@ -92,22 +92,22 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8"
         >
           {quickActions.map((action, index) => (
             <button
               key={index}
-              className="group p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
+              className="group p-3 sm:p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-all"
             >
-              <div className={`w-10 h-10 rounded-lg ${action.bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
-                <action.icon className={`w-5 h-5 ${action.color}`} />
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg ${action.bg} flex items-center justify-center mb-2 sm:mb-3 group-hover:scale-110 transition-transform`}>
+                <action.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${action.color}`} />
               </div>
-              <span className="text-sm font-medium">{action.label}</span>
+              <span className="text-xs sm:text-sm font-medium line-clamp-2">{action.label}</span>
             </button>
           ))}
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Recent Chats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

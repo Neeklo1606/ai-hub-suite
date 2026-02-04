@@ -106,9 +106,10 @@ interface CollapsibleItemProps {
   item: SidebarItem;
   isActive: boolean;
   pathname: string;
+  onNavigate?: () => void;
 }
 
-function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
+function CollapsibleItem({ item, isActive, pathname, onNavigate }: CollapsibleItemProps) {
   const [isOpen, setIsOpen] = useState(isActive);
   const hasChildren = item.children && item.children.length > 0;
 
@@ -122,7 +123,7 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
   const content = (
     <>
       <item.icon className="w-5 h-5 shrink-0" />
-      <span className="flex-1 text-left">{item.label}</span>
+      <span className="flex-1 text-left truncate">{item.label}</span>
       {item.badge && (
         <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-primary/20 text-primary">
           {item.badge}
@@ -131,7 +132,7 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
       {hasChildren && (
         <ChevronDown
           className={cn(
-            "w-4 h-4 transition-transform",
+            "w-4 h-4 transition-transform shrink-0",
             isOpen && "rotate-180"
           )}
         />
@@ -146,7 +147,7 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
           {content}
         </button>
       ) : (
-        <Link to={item.href} className={buttonClasses}>
+        <Link to={item.href} className={buttonClasses} onClick={onNavigate}>
           {content}
         </Link>
       )}
@@ -165,6 +166,7 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
                 <Link
                   key={index}
                   to={child.href}
+                  onClick={onNavigate}
                   className={cn(
                     "flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all",
                     pathname === child.href
@@ -172,8 +174,8 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
                       : "text-sidebar-foreground/60 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                   )}
                 >
-                  <ChevronRight className="w-3 h-3" />
-                  {child.label}
+                  <ChevronRight className="w-3 h-3 shrink-0" />
+                  <span className="truncate">{child.label}</span>
                 </Link>
               ))}
             </div>
@@ -184,7 +186,11 @@ function CollapsibleItem({ item, isActive, pathname }: CollapsibleItemProps) {
   );
 }
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onNavigate?: () => void;
+}
+
+export function AppSidebar({ onNavigate }: AppSidebarProps) {
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -192,7 +198,7 @@ export function AppSidebar() {
     <aside className="w-[280px] h-screen flex flex-col bg-sidebar border-r border-sidebar-border">
       {/* Logo */}
       <div className="p-4 border-b border-sidebar-border">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2" onClick={onNavigate}>
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
             <Zap className="w-5 h-5 text-white" />
           </div>
@@ -213,6 +219,7 @@ export function AppSidebar() {
               item={item}
               isActive={!!isActive}
               pathname={pathname}
+              onNavigate={onNavigate}
             />
           );
         })}
@@ -237,17 +244,17 @@ export function AppSidebar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0">
                 <User className="w-5 h-5 text-white" />
               </div>
-              <div className="flex-1 text-left">
-                <div className="text-sm font-medium text-sidebar-foreground">user@example.com</div>
+              <div className="flex-1 text-left min-w-0">
+                <div className="text-sm font-medium text-sidebar-foreground truncate">user@example.com</div>
                 <div className="text-xs text-sidebar-foreground/60 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-primary" />
+                  <Sparkles className="w-3 h-3 text-primary shrink-0" />
                   Pro Plan
                 </div>
               </div>
-              <ChevronsUpDown className="w-4 h-4 text-sidebar-foreground/60" />
+              <ChevronsUpDown className="w-4 h-4 text-sidebar-foreground/60 shrink-0" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

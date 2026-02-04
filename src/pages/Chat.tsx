@@ -88,11 +88,11 @@ export default function Chat() {
     <DashboardLayout>
       <div className="h-screen flex flex-col">
         {/* Header */}
-        <header className="border-b border-border bg-background/80 backdrop-blur-sm px-6 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <header className="border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-3 pt-14 lg:pt-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-4">
               <ModelSelector selectedModel={selectedModel} onSelect={setSelectedModel} />
-              <Button variant="ghost" size="sm" className="gap-2">
+              <Button variant="ghost" size="sm" className="gap-2 hidden sm:flex">
                 <Plus className="w-4 h-4" />
                 Новый чат
               </Button>
@@ -100,12 +100,12 @@ export default function Chat() {
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" className="gap-2">
                 <History className="w-4 h-4" />
-                История
+                <span className="hidden sm:inline">История</span>
               </Button>
               {messages.length > 0 && (
                 <Button variant="ghost" size="sm" className="gap-2 text-destructive" onClick={clearChat}>
                   <Trash2 className="w-4 h-4" />
-                  Очистить
+                  <span className="hidden sm:inline">Очистить</span>
                 </Button>
               )}
             </div>
@@ -116,23 +116,23 @@ export default function Chat() {
         <div className="flex-1 overflow-hidden">
           {messages.length === 0 ? (
             // Welcome Screen
-            <div className="h-full flex flex-col items-center justify-center p-6">
+            <div className="h-full flex flex-col items-center justify-center p-4 sm:p-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-center max-w-2xl"
+                className="text-center max-w-2xl w-full"
               >
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-6 shadow-[0_0_40px_hsla(217,91%,60%,0.3)]">
-                  <Sparkles className="w-8 h-8 text-white" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_40px_hsla(217,91%,60%,0.3)]">
+                  <Sparkles className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                   Чем могу помочь?
                 </h1>
-                <p className="text-muted-foreground mb-8">
+                <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
                   Выберите модель и начните общение с AI
                 </p>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {welcomePrompts.map((prompt, index) => (
                     <motion.button
                       key={index}
@@ -140,14 +140,14 @@ export default function Chat() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                       onClick={() => handlePromptClick(prompt)}
-                      className="flex items-start gap-3 p-4 rounded-xl border border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/30 transition-all text-left group"
+                      className="flex items-start gap-3 p-3 sm:p-4 rounded-xl border border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/30 transition-all text-left group"
                     >
-                      <span className="text-2xl">{prompt.icon}</span>
-                      <div>
-                        <p className="font-medium text-foreground group-hover:text-primary transition-colors">
+                      <span className="text-xl sm:text-2xl">{prompt.icon}</span>
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base">
                           {prompt.title}
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
                           {prompt.description}
                         </p>
                       </div>
@@ -159,7 +159,7 @@ export default function Chat() {
           ) : (
             // Messages
             <ScrollArea ref={scrollRef} className="h-full">
-              <div className="max-w-4xl mx-auto p-6 space-y-4">
+              <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <AnimatePresence>
                   {messages.map((message) => (
                     <motion.div
