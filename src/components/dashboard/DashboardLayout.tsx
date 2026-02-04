@@ -1,8 +1,9 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -10,12 +11,33 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [open, setOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebar-collapsed');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const saved = localStorage.getItem('sidebar-collapsed');
+      setSidebarCollapsed(saved ? JSON.parse(saved) : false);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <div className="min-h-screen flex w-full bg-background">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
-        <AppSidebar />
+        <AppSidebar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={() => {
+            const newCollapsed = !sidebarCollapsed;
+            setSidebarCollapsed(newCollapsed);
+            localStorage.setItem('sidebar-collapsed', JSON.stringify(newCollapsed));
+          }}
+        />
       </div>
 
       {/* Mobile Sidebar */}
@@ -34,7 +56,32 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </SheetContent>
       </Sheet>
 
-      <main className="flex-1 overflow-auto lg:ml-0">
+      {/* Main Content */}
+      <main
+        className={cn(
+          "flex-1 overflow-auto transition-all duration-300",
+          "lg:ml-0"
+        )}
+        style={{
+          marginLeft: sidebarCollapsed ? '70px' : '280px',
+        }}
+      >
+        {/* Expand button when collapsed */}
+        {sidebarCollapsed && (
+          <div className="fixed top-4 left-[85px] z-30 lg:block hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 bg-background/80 backdrop-blur-sm border border-border shadow-sm"
+              onClick={() => {
+                setSidebarCollapsed(false);
+                localStorage.setItem('sidebar-collapsed', 'false');
+              }}
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
         {children}
       </main>
     </div>
