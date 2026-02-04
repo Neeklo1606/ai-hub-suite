@@ -20,7 +20,6 @@ import {
   Shield,
   FileText,
   ChevronLeft,
-  ChevronRight as ChevronRightIcon,
   LogOut,
   Loader2,
 } from "lucide-react";
