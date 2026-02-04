@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Home,
   MessageSquare,
@@ -30,6 +30,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { authService } from "@/services/authService";
+import { useToast } from "@/hooks/use-toast";
 
 interface SidebarItem {
   icon: React.ElementType;
@@ -193,6 +195,52 @@ interface AppSidebarProps {
 export function AppSidebar({ onNavigate }: AppSidebarProps) {
   const location = useLocation();
   const pathname = location.pathname;
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        if (authService.isAuthenticated()) {
+          const userData = await authService.getUser();
+          setUser(userData);
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки данных пользователя:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      toast({
+        title: "Выход выполнен",
+        description: "Вы успешно вышли из системы",
+      });
+      navigate("/login");
+    } catch (error: any) {
+      console.error("Ошибка выхода:", error);
+      // Выходим даже при ошибке
+      localStorage.removeItem("auth_token");
+      navigate("/login");
+    }
+  };
+
+  const getUserInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <aside className="w-[280px] h-screen flex flex-col bg-sidebar border-r border-sidebar-border">
@@ -245,10 +293,18 @@ export function AppSidebar({ onNavigate }: AppSidebarProps) {
           <DropdownMenuTrigger asChild>
             <button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-sidebar-accent/50 transition-colors">
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0">
-                <User className="w-5 h-5 text-white" />
+                {user && user.name ? (
+                  <span className="text-xs font-semibold text-white">
+                    {getUserInitials(user.name)}
+                  </span>
+                ) : (
+                  <User className="w-5 h-5 text-white" />
+                )}
               </div>
               <div className="flex-1 text-left min-w-0">
-                <div className="text-sm font-medium text-sidebar-foreground truncate">user@example.com</div>
+                <div className="text-sm font-medium text-sidebar-foreground truncate">
+                  {isLoading ? "Загрузка..." : user?.email || "user@example.com"}
+                </div>
                 <div className="text-xs text-sidebar-foreground/60 flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-primary shrink-0" />
                   Pro Plan
@@ -259,12 +315,24 @@ export function AppSidebar({ onNavigate }: AppSidebarProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {user && (
+              <>
+                <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">
+                  {user.name}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuItem>Профиль</DropdownMenuItem>
             <DropdownMenuItem>Тарифы</DropdownMenuItem>
             <DropdownMenuItem>Настройки</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">Выйти</DropdownMenuItem>
+            <DropdownMenuItem 
+              className="text-destructive cursor-pointer" 
+              onClick={handleLogout}
+            >
+              Выйти
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
