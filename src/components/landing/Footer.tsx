@@ -54,7 +54,12 @@ const FooterLink = ({ href, children }: { href: string; children: React.ReactNod
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-800 bg-slate-900">
+    <footer 
+      className="border-t border-slate-800/50"
+      style={{
+        background: "linear-gradient(180deg, hsl(217 33% 9%) 0%, hsl(222 47% 4%) 100%)"
+      }}
+    >
       <div className="container px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto">
         {/* Top Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
