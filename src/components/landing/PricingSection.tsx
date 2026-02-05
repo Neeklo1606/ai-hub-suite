@@ -8,6 +8,7 @@ const plans = [
     name: "Free",
     price: "0",
     period: "₽/мес",
+    bonus: "",
     description: "Для знакомства с платформой",
     features: [
       "Базовые модели",
@@ -22,6 +23,7 @@ const plans = [
     name: "Pro",
     price: "990",
     period: "₽/мес",
+    bonus: "Экономия 20% при годовой оплате",
     description: "Для активных пользователей",
     features: [
       "Все 100+ моделей",
@@ -38,6 +40,7 @@ const plans = [
     name: "Team",
     price: "4 990",
     period: "₽/мес",
+    bonus: "За всю команду",
     description: "Для команд и агентств",
     features: [
       "Всё из Pro",
@@ -54,6 +57,7 @@ const plans = [
     name: "Enterprise",
     price: "По запросу",
     period: "",
+    bonus: "Индивидуальные условия",
     description: "Для крупного бизнеса",
     features: [
       "Всё из Team",
@@ -87,7 +91,7 @@ export function PricingSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -95,14 +99,15 @@ export function PricingSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
-              className={`relative p-8 rounded-2xl transition-all duration-300 ${
+              whileHover={{ scale: plan.popular ? 1.05 : 1.02 }}
+              className={`relative flex flex-col min-h-[520px] sm:min-h-[580px] p-6 sm:p-8 rounded-2xl transition-all duration-300 ${
                 plan.popular
-                  ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/10 shadow-xl lg:scale-105"
-                  : "bg-slate-800/30 hover:bg-slate-800/50"
+                  ? "bg-slate-800/60 border-2 border-indigo-500 shadow-2xl shadow-indigo-500/20 lg:scale-105 z-10"
+                  : "bg-slate-800/30 border border-slate-700/40 hover:border-slate-600/60"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold shadow-lg">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg">
                   Популярный
                 </div>
               )}
@@ -112,27 +117,29 @@ export function PricingSection() {
                 <p className="text-sm text-gray-500">{plan.description}</p>
               </div>
 
-              <div className="mb-6">
+              <div className="mb-8">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-white">{plan.price}</span>
-                  {plan.period && <span className="text-gray-500 text-sm">{plan.period}</span>}
+                  <span className="text-5xl font-extrabold text-white">{plan.price}</span>
+                  {plan.period && <span className="text-gray-400 text-base">{plan.period}</span>}
                 </div>
+                {plan.bonus && (
+                  <p className="text-sm text-indigo-400 mt-2">{plan.bonus}</p>
+                )}
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 flex-1">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3 text-sm">
-                    <Check className={`w-5 h-5 shrink-0 mt-0.5 ${plan.popular ? 'text-indigo-400' : 'text-gray-500'}`} />
-                    <span className="text-gray-400">{feature}</span>
+                    <Check className="w-5 h-5 shrink-0 mt-0.5 text-indigo-400" />
+                    <span className="text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <Link to="/register">
+              <Link to="/register" className="mt-8">
                 <Button
-                  size="sm"
                   variant={plan.popular ? "default" : "secondary"}
-                  className="w-full"
+                  className="w-full py-3 px-6 rounded-xl"
                 >
                   {plan.cta}
                 </Button>
