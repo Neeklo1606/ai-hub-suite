@@ -1,73 +1,45 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Wallet, Shield, Building2, BarChart3 } from "lucide-react";
+import { Globe, Zap, Wallet, Shield } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const features = [
-  {
-    icon: Globe,
-    title: "Без VPN",
-    description: "Все модели работают напрямую из России. Никаких обходов и замедлений.",
-  },
-  {
-    icon: Zap,
-    title: "Высокая скорость",
-    description: "Параллельная обработка запросов. Ответ за секунды, не минуты.",
-  },
-  {
-    icon: Wallet,
-    title: "Прозрачная оплата",
-    description: "Pay-as-you-go модель. Без абонентки, только за использование.",
-  },
-  {
-    icon: Shield,
-    title: "Безопасность данных",
-    description: "Не храним запросы, шифрование end-to-end. Соответствие 152-ФЗ.",
-  },
-  {
-    icon: Building2,
-    title: "B2B-решения",
-    description: "ЭДО, API, корпоративные тарифы с выделенным менеджером.",
-  },
-  {
-    icon: BarChart3,
-    title: "Детальная аналитика",
-    description: "Расходы по моделям, пользователям. Экспорт отчётов в Excel.",
-  },
+  { icon: Globe, title: "Без VPN", gradient: "from-blue-500 to-cyan-500" },
+  { icon: Zap, title: "Быстро", gradient: "from-yellow-500 to-orange-500" },
+  { icon: Wallet, title: "Pay-as-you-go", gradient: "from-green-500 to-emerald-500" },
+  { icon: Shield, title: "Безопасно", gradient: "from-purple-500 to-pink-500" },
 ];
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 relative">
-      <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
+    <section id="features" className="py-24 bg-[#0a0a0a]">
+      <div className="container px-4 max-w-4xl mx-auto">
+        
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.3 }}
-          className="text-center mb-16"
+          className="text-2xl font-semibold text-white mb-8 text-center"
         >
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Почему выбирают нас
-          </h2>
-          <p className="text-gray-400 text-base max-w-2xl mx-auto">
-            Созданы для российских пользователей и бизнеса
-          </p>
-        </motion.div>
+          Преимущества
+        </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {features.map((feature, index) => (
             <motion.div
-              key={index}
+              key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              className="group p-8 rounded-2xl bg-slate-800/30 hover:bg-slate-800/50 transition-all duration-300"
+              transition={{ delay: index * 0.05 }}
+              className="p-6 rounded-2xl bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#404040] transition-colors flex flex-col items-center gap-4"
             >
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-6">
-                <feature.icon className="w-7 h-7 text-indigo-400" />
+              <div className={cn(
+                "w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br",
+                feature.gradient
+              )}>
+                <feature.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-3">{feature.title}</h3>
-              <p className="text-gray-400 text-base leading-relaxed">{feature.description}</p>
+              <span className="text-sm font-medium text-white">{feature.title}</span>
             </motion.div>
           ))}
         </div>
