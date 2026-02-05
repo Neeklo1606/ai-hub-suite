@@ -106,7 +106,7 @@ export function Header() {
           {/* Tablet CTA (md-lg) */}
           <div className="hidden md:flex lg:hidden items-center gap-2">
             <Link to="/login">
-              <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/10">
+              <Button variant="ghost" size="sm">
                 Войти
               </Button>
             </Link>
@@ -115,12 +115,12 @@ export function Header() {
           {/* Desktop CTA (lg+) */}
           <div className="hidden lg:flex items-center gap-3">
             <Link to="/login">
-              <Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-white/10">
+              <Button variant="ghost" size="sm">
                 Войти
               </Button>
             </Link>
             <Link to="/register">
-              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all">
+              <Button size="sm">
                 Начать бесплатно
               </Button>
             </Link>
@@ -180,12 +180,12 @@ export function Header() {
               ))}
               <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-slate-700/50">
                 <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full border-slate-600 text-slate-300 hover:bg-white/10 hover:text-white">
+                  <Button variant="outline" className="w-full">
                     Войти
                   </Button>
                 </Link>
                 <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30">
+                  <Button className="w-full">
                     Начать бесплатно
                   </Button>
                 </Link>
