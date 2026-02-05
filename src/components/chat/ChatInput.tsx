@@ -10,59 +10,11 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
-// Типы для Web Speech API
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start: () => void;
-  stop: () => void;
-  abort: () => void;
-  onresult: (event: SpeechRecognitionEvent) => void;
-  onerror: (event: SpeechRecognitionErrorEvent) => void;
-  onend: () => void;
-}
-
-interface SpeechRecognitionEvent {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-interface SpeechRecognitionErrorEvent {
-  error: string;
-  message: string;
-}
-
-interface SpeechRecognitionResultList {
-  length: number;
-  item(index: number): SpeechRecognitionResult;
-  [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionResult {
-  length: number;
-  item(index: number): SpeechRecognitionAlternative;
-  [index: number]: SpeechRecognitionAlternative;
-  isFinal: boolean;
-}
-
-interface SpeechRecognitionAlternative {
-  transcript: string;
-  confidence: number;
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition: new () => SpeechRecognition;
-    webkitSpeechRecognition: new () => SpeechRecognition;
-  }
-}
-
 export function ChatInput({ onSend, isLoading, placeholder = "Введите сообщение..." }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef<string>("");
 
   useEffect(() => {
@@ -74,19 +26,19 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
 
   // Инициализация Speech Recognition
   useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognitionAPI = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     
-    if (!SpeechRecognition) {
+    if (!SpeechRecognitionAPI) {
       console.warn("Speech Recognition не поддерживается в этом браузере");
       return;
     }
 
-    const recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognitionAPI();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "ru-RU";
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       let interimTranscript = "";
       let finalTranscript = "";
 
@@ -100,26 +52,22 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
       }
 
       if (finalTranscript) {
-        // Добавляем финальный текст к уже распознанному
         finalTranscriptRef.current += finalTranscript;
-        setMessage((prev) => {
-          // Удаляем промежуточные результаты и добавляем финальный текст
+        setMessage(() => {
           const baseText = finalTranscriptRef.current;
           return baseText.trim();
         });
       } else if (interimTranscript) {
-        // Показываем промежуточный результат поверх финального текста
-        setMessage((prev) => {
+        setMessage(() => {
           const baseText = finalTranscriptRef.current;
           return (baseText + interimTranscript).trim();
         });
       }
     };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (event: any) => {
       console.error("Ошибка распознавания речи:", event.error);
       if (event.error === "no-speech") {
-        // Нет речи - это нормально, просто останавливаем
         if (recognitionRef.current) {
           recognitionRef.current.stop();
         }
@@ -154,7 +102,6 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
     }
 
     try {
-      // Сбрасываем финальный текст при начале новой записи
       finalTranscriptRef.current = message;
       recognitionRef.current.start();
       setIsRecording(true);
@@ -227,7 +174,7 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
               disabled={isLoading}
               className={cn(
                 "h-9 w-9 text-muted-foreground hover:text-foreground transition-all",
-                isRecording && "text-red-500 hover:text-red-600 animate-pulse"
+                isRecording && "text-destructive hover:text-destructive animate-pulse"
               )}
               title={isRecording ? "Остановить запись" : "Начать запись голоса"}
             >
