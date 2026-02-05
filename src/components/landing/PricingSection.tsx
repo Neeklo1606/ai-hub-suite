@@ -102,10 +102,10 @@ export function PricingSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
             Простые и честные цены
           </h2>
-          <p className="text-slate-400 text-base max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             Выберите план, который подходит вам
           </p>
         </motion.div>
@@ -137,25 +137,25 @@ export function PricingSection() {
               )}
 
               <div className="mb-6">
-                <h3 className="text-2xl font-semibold text-white mb-2">{plan.name}</h3>
-                <p className="text-sm text-slate-500">{plan.description}</p>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">{plan.name}</h3>
+                <p className="text-sm md:text-base text-slate-500 font-light">{plan.description}</p>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">{plan.price}</span>
-                  {plan.period && <span className="text-slate-400 text-base">{plan.period}</span>}
+                  <span className="text-5xl md:text-6xl font-black tabular-nums bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">{plan.price}</span>
+                  {plan.period && <span className="text-slate-400 text-base md:text-lg font-normal">{plan.period}</span>}
                 </div>
                 {plan.bonus && (
-                  <p className="text-sm text-indigo-400 mt-2">{plan.bonus}</p>
+                  <p className="text-sm md:text-base text-indigo-400 mt-2 font-medium">{plan.bonus}</p>
                 )}
               </div>
 
               <ul className="space-y-3 flex-1">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-3 text-sm">
+                  <li key={featureIndex} className="flex items-start gap-3 text-sm md:text-base">
                     <Check className="w-5 h-5 shrink-0 mt-0.5 text-indigo-400" />
-                    <span className="text-slate-300">{feature}</span>
+                    <span className="text-slate-300 leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>

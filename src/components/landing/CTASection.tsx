@@ -28,17 +28,17 @@ export function CTASection() {
           transition={{ duration: 0.3 }}
           className="text-center"
         >
-          <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
             Попробуйте сейчас бесплатно
           </h2>
           
-          <p className="text-base text-slate-400 mb-8 max-w-xl mx-auto">
-            Получите <span className="text-indigo-400 font-semibold">100₽</span> на баланс при регистрации.
+          <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Получите <span className="text-indigo-400 font-bold tabular-nums">100₽</span> на баланс при регистрации.
             {" "}Без привязки карты.
           </p>
 
           <Link to="/register">
-            <Button size="lg" className="shadow-xl shadow-indigo-500/40">
+            <Button size="lg" className="shadow-xl shadow-indigo-500/40 text-lg px-10 py-6 h-auto">
               Начать работу
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
