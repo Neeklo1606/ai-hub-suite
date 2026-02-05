@@ -1,148 +1,105 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 const plans = [
   {
     name: "Free",
     price: "0",
     period: "₽/мес",
-    bonus: "",
-    description: "Для знакомства с платформой",
-    features: [
-      "Базовые модели",
-      "10 запросов/мин",
-      "История 7 дней",
-      "Поддержка по email",
-    ],
-    cta: "Начать бесплатно",
+    description: "Для знакомства",
+    cta: "Начать",
     popular: false,
   },
   {
     name: "Pro",
     price: "990",
     period: "₽/мес",
-    bonus: "Экономия 20% при годовой оплате",
-    description: "Для активных пользователей",
-    features: [
-      "Все 100+ моделей",
-      "100 запросов/мин",
-      "Приоритетная очередь",
-      "Ранний доступ к новинкам",
-      "История без ограничений",
-      "Приоритетная поддержка",
-    ],
-    cta: "Выбрать Pro",
+    description: "Все модели",
+    cta: "Выбрать",
     popular: true,
   },
   {
     name: "Team",
     price: "4 990",
     period: "₽/мес",
-    bonus: "За всю команду",
-    description: "Для команд и агентств",
-    features: [
-      "Всё из Pro",
-      "До 5 пользователей",
-      "Общий баланс команды",
-      "API-доступ",
-      "Детальная аналитика",
-      "Менеджер аккаунта",
-    ],
-    cta: "Выбрать Team",
-    popular: false,
-  },
-  {
-    name: "Enterprise",
-    price: "По запросу",
-    period: "",
-    bonus: "Индивидуальные условия",
-    description: "Для крупного бизнеса",
-    features: [
-      "Всё из Team",
-      "Неограничено пользователей",
-      "SLA 99.9%",
-      "Электронный документооборот",
-      "Выделенный менеджер",
-      "Кастомные интеграции",
-    ],
-    cta: "Связаться",
+    description: "До 5 человек",
+    cta: "Выбрать",
     popular: false,
   },
 ];
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-24 relative">
-      <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
+    <section id="pricing" className="py-24 bg-[#0a0a0a]">
+      <div className="container px-4 max-w-4xl mx-auto">
+        
+        {/* Heading */}
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.3 }}
-          className="text-center mb-16"
+          className="text-2xl font-semibold text-white mb-8 text-center"
         >
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Простые и честные цены
-          </h2>
-          <p className="text-gray-400 text-base max-w-2xl mx-auto">
-            Выберите план, который подходит вам
-          </p>
-        </motion.div>
+          Тарифы
+        </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {plans.map((plan, index) => (
             <motion.div
-              key={index}
+              key={plan.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              whileHover={{ scale: plan.popular ? 1.05 : 1.02 }}
-              className={`relative flex flex-col min-h-[520px] sm:min-h-[580px] p-6 sm:p-8 rounded-2xl transition-all duration-300 ${
+              transition={{ delay: index * 0.05 }}
+              className={cn(
+                "p-6 rounded-2xl transition-all duration-200 flex flex-col items-center text-center",
                 plan.popular
-                  ? "bg-slate-800/60 border-2 border-indigo-500 shadow-2xl shadow-indigo-500/20 lg:scale-105 z-10"
-                  : "bg-slate-800/30 border border-slate-700/40 hover:border-slate-600/60"
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg">
-                  Популярный
-                </div>
+                  ? "bg-[#8b5cf6] border border-[#8b5cf6]"
+                  : "bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#404040]"
               )}
+            >
+              {/* Plan name */}
+              <span className={cn(
+                "text-sm font-medium mb-4",
+                plan.popular ? "text-white/80" : "text-gray-500"
+              )}>
+                {plan.name}
+              </span>
 
-              <div className="mb-6">
-                <h3 className="text-2xl font-semibold text-white mb-2">{plan.name}</h3>
-                <p className="text-sm text-gray-500">{plan.description}</p>
-              </div>
-
-              <div className="mb-8">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-extrabold text-white">{plan.price}</span>
-                  {plan.period && <span className="text-gray-400 text-base">{plan.period}</span>}
-                </div>
-                {plan.bonus && (
-                  <p className="text-sm text-indigo-400 mt-2">{plan.bonus}</p>
+              {/* Price */}
+              <div className="flex items-baseline gap-1 mb-2">
+                <span className="text-4xl font-bold text-white">{plan.price}</span>
+                {plan.period && (
+                  <span className={cn(
+                    "text-sm",
+                    plan.popular ? "text-white/60" : "text-gray-500"
+                  )}>
+                    {plan.period}
+                  </span>
                 )}
               </div>
 
-              <ul className="space-y-3 flex-1">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-3 text-sm">
-                    <Check className="w-5 h-5 shrink-0 mt-0.5 text-indigo-400" />
-                    <span className="text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              {/* Description */}
+              <span className={cn(
+                "text-sm mb-6",
+                plan.popular ? "text-white/70" : "text-gray-500"
+              )}>
+                {plan.description}
+              </span>
 
-              <Link to="/register" className="mt-8">
-                <Button
-                  variant={plan.popular ? "default" : "secondary"}
-                  className="w-full py-3 px-6 rounded-xl"
-                >
-                  {plan.cta}
-                </Button>
+              {/* CTA */}
+              <Link
+                to="/register"
+                className={cn(
+                  "w-full py-3 px-6 rounded-full text-sm font-medium transition-all duration-200 text-center",
+                  plan.popular
+                    ? "bg-white text-[#8b5cf6] hover:bg-gray-100"
+                    : "bg-[#2a2a2a] text-white hover:bg-[#3a3a3a] border border-[#404040]"
+                )}
+              >
+                {plan.cta}
               </Link>
             </motion.div>
           ))}
