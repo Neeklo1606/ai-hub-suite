@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Zap, Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const navLinks = [
-  { label: "Возможности", href: "#models", isAnchor: true },
-  { label: "Для бизнеса", href: "#features", isAnchor: true },
-  { label: "Отзывы", href: "#reviews", isAnchor: true },
-  { label: "Тарифы", href: "#pricing", isAnchor: true },
-  { label: "Вопросы", href: "#faq", isAnchor: true },
-  { label: "Блог", href: "/blog", isAnchor: false },
+  { label: "Возможности", href: "/possibilities" },
+  { label: "Для бизнеса", href: "/business" },
+  { label: "Отзывы", href: "/reviews" },
+  { label: "Тарифы", href: "/pricing" },
+  { label: "Вопросы", href: "/faq" },
+  { label: "Блог", href: "/blog" },
 ];
 
 // Links visible on tablet (md) - subset of full nav
@@ -21,6 +21,11 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  const isActiveLink = useCallback((href: string) => {
+    return location.pathname === href;
+  }, [location.pathname]);
 
   // Close mobile menu on resize to desktop
   useEffect(() => {
@@ -59,47 +64,36 @@ export function Header() {
           <nav className="hidden md:flex lg:hidden items-center gap-1">
             {navLinks
               .filter((link) => tabletLinks.includes(link.label))
-              .map((link, index) =>
-                link.isAnchor ? (
-                  <a
-                    key={index}
-                    href={link.href}
-                    className="px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={index}
-                    to={link.href}
-                    className="px-3 py-2 text-sm text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                  >
-                    {link.label}
-                  </Link>
-                )
+              .map((link, index) => (
+                <Link
+                  key={index}
+                  to={link.href}
+                  className={`px-3 py-2 text-sm transition-colors rounded-lg hover:bg-white/5 ${
+                    isActiveLink(link.href)
+                      ? "text-indigo-400 border-b-2 border-indigo-400"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
               )}
           </nav>
 
           {/* Desktop Navigation (lg+) */}
           <nav className="hidden lg:flex items-center gap-0.5">
             {navLinks.map((link, index) => (
-              link.isAnchor ? (
-                <a
-                  key={index}
-                  href={link.href}
-                  className="px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={index}
-                  to={link.href}
-                  className="px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                >
-                  {link.label}
-                </Link>
-              )
+              <Link
+                key={index}
+                to={link.href}
+                className={`px-4 py-2 text-sm transition-colors rounded-lg hover:bg-white/5 ${
+                  isActiveLink(link.href)
+                    ? "text-indigo-400 border-b-2 border-indigo-400"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
             ))}
           </nav>
 
@@ -159,23 +153,17 @@ export function Header() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  {link.isAnchor ? (
-                    <a
-                      href={link.href}
-                      className="block px-4 py-3 text-base text-slate-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
-                    <Link
-                      to={link.href}
-                      className="block px-4 py-3 text-base text-slate-300 hover:text-white transition-colors rounded-xl hover:bg-white/5"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  )}
+                  <Link
+                    to={link.href}
+                    className={`block px-4 py-3 text-base transition-colors rounded-xl hover:bg-white/5 ${
+                      isActiveLink(link.href)
+                        ? "text-indigo-400 border-l-2 border-indigo-400 bg-indigo-500/10"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
                 </motion.div>
               ))}
               <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-slate-700/50">
