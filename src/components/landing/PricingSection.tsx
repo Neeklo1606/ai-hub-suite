@@ -74,27 +74,8 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section 
-      id="pricing" 
-      className="py-24 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(180deg, hsl(217 33% 9%) 0%, hsl(257 53% 10%) 50%, hsl(222 47% 6%) 100%)"
-      }}
-    >
-      {/* Mesh gradient effect like Stripe */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 10% 20%, hsla(239 84% 67% / 0.15), transparent 30%),
-            radial-gradient(circle at 90% 30%, hsla(280 84% 60% / 0.12), transparent 30%),
-            radial-gradient(circle at 50% 80%, hsla(263 70% 50% / 0.1), transparent 30%)
-          `
-        }}
-        aria-hidden="true"
-      />
-      
-      <div className="container relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="pricing" className="py-24 relative">
+      <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -102,10 +83,10 @@ export function PricingSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
+          <h2 className="text-4xl font-bold text-white mb-6">
             Простые и честные цены
           </h2>
-          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-base max-w-2xl mx-auto">
             Выберите план, который подходит вам
           </p>
         </motion.div>
@@ -121,41 +102,36 @@ export function PricingSection() {
               whileHover={{ scale: plan.popular ? 1.05 : 1.02 }}
               className={`relative flex flex-col min-h-[520px] sm:min-h-[580px] p-6 sm:p-8 rounded-2xl transition-all duration-300 ${
                 plan.popular
-                  ? "border-2 border-indigo-500 shadow-2xl shadow-indigo-500/30 lg:scale-105 z-10"
-                  : "border border-slate-700/40 hover:border-slate-600/60 hover:shadow-xl hover:shadow-indigo-500/10"
+                  ? "bg-slate-800/60 border-2 border-indigo-500 shadow-2xl shadow-indigo-500/20 lg:scale-105 z-10"
+                  : "bg-slate-800/30 border border-slate-700/40 hover:border-slate-600/60"
               }`}
-              style={{
-                background: plan.popular 
-                  ? "linear-gradient(135deg, hsla(215 28% 20% / 0.8) 0%, hsla(257 53% 25% / 0.5) 50%, hsla(215 28% 20% / 0.8) 100%)"
-                  : "linear-gradient(135deg, hsla(215 28% 17% / 0.5) 0%, hsla(257 53% 21% / 0.2) 50%, hsla(215 28% 17% / 0.5) 100%)"
-              }}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#6366f1] via-[#8b5cf6] to-[#a855f7] text-white text-xs font-bold uppercase tracking-wide shadow-lg shadow-indigo-500/40">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-bold uppercase tracking-wide shadow-lg">
                   Популярный
                 </div>
               )}
 
               <div className="mb-6">
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">{plan.name}</h3>
-                <p className="text-sm md:text-base text-slate-500 font-light">{plan.description}</p>
+                <h3 className="text-2xl font-semibold text-white mb-2">{plan.name}</h3>
+                <p className="text-sm text-gray-500">{plan.description}</p>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl md:text-6xl font-black tabular-nums bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">{plan.price}</span>
-                  {plan.period && <span className="text-slate-400 text-base md:text-lg font-normal">{plan.period}</span>}
+                  <span className="text-5xl font-extrabold text-white">{plan.price}</span>
+                  {plan.period && <span className="text-gray-400 text-base">{plan.period}</span>}
                 </div>
                 {plan.bonus && (
-                  <p className="text-sm md:text-base text-indigo-400 mt-2 font-medium">{plan.bonus}</p>
+                  <p className="text-sm text-indigo-400 mt-2">{plan.bonus}</p>
                 )}
               </div>
 
               <ul className="space-y-3 flex-1">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-3 text-sm md:text-base">
+                  <li key={featureIndex} className="flex items-start gap-3 text-sm">
                     <Check className="w-5 h-5 shrink-0 mt-0.5 text-indigo-400" />
-                    <span className="text-slate-300 leading-relaxed">{feature}</span>
+                    <span className="text-gray-300">{feature}</span>
                   </li>
                 ))}
               </ul>

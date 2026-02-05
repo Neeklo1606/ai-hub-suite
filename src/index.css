@@ -15,10 +15,10 @@
     --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 239 84% 67%;
+    --primary: 217 91% 60%;
     --primary-foreground: 222 47% 6%;
 
-    --secondary: 263 70% 50%;
+    --secondary: 250 80% 60%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217 33% 17%;
@@ -32,35 +32,33 @@
 
     --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 239 84% 67%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Enhanced gradient tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(239 84% 67%), hsl(263 70% 50%), hsl(280 84% 60%));
-    --gradient-hero: radial-gradient(ellipse 80% 50% at 50% -20%, hsla(239 84% 67% / 0.4), transparent 60%);
-    --gradient-card: linear-gradient(135deg, hsla(215 28% 17% / 0.8) 0%, hsla(257 53% 21% / 0.4) 50%, hsla(215 28% 17% / 0.8) 100%);
-    --gradient-section: linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(222 47% 8%) 100%);
-    
-    /* Category gradients */
-    --gradient-text: linear-gradient(135deg, hsl(217 91% 60%), hsl(186 94% 42%));
-    --gradient-image: linear-gradient(135deg, hsl(263 70% 50%), hsl(328 81% 57%));
-    --gradient-video: linear-gradient(135deg, hsl(25 95% 53%), hsl(0 84% 60%));
-    --gradient-audio: linear-gradient(135deg, hsl(158 64% 52%), hsl(174 84% 48%));
+    /* Custom tokens */
+    --neon-blue: 217 91% 60%;
+    --neon-purple: 280 80% 60%;
+    --neon-cyan: 180 80% 50%;
+    --neon-pink: 330 80% 60%;
 
-    /* Glow effects */
-    --shadow-glow-sm: 0 0 20px hsla(239 84% 67% / 0.3);
-    --shadow-glow-md: 0 0 40px hsla(239 84% 67% / 0.4);
-    --shadow-glow-lg: 0 0 60px hsla(239 84% 67% / 0.5);
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(280 80% 60%));
+    --gradient-hero: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 6%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(222 47% 10%) 0%, hsl(222 47% 8%) 100%);
+    --gradient-glow: radial-gradient(ellipse 80% 50% at 50% -20%, hsla(217 91% 60% / 0.3), transparent);
+
+    --shadow-glow-sm: 0 0 20px hsla(217 91% 60% / 0.3);
+    --shadow-glow-md: 0 0 40px hsla(217 91% 60% / 0.4);
+    --shadow-glow-lg: 0 0 60px hsla(217 91% 60% / 0.5);
 
     --sidebar-background: 222 47% 7%;
     --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 239 84% 67%;
+    --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 222 47% 6%;
     --sidebar-accent: 217 33% 15%;
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217 33% 15%;
-    --sidebar-ring: 239 84% 67%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -84,21 +82,6 @@
   .gradient-text {
     @apply bg-clip-text text-transparent;
     background-image: var(--gradient-primary);
-  }
-
-  .gradient-text-heading {
-    background: linear-gradient(to right, #ffffff 0%, #c7d2fe 50%, #ffffff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-shadow-glow {
-    text-shadow: 0 2px 20px hsla(239 84% 67% / 0.3);
-  }
-
-  .text-shadow-glow-strong {
-    text-shadow: 0 4px 30px hsla(239 84% 67% / 0.5);
   }
 
   .gradient-border {
@@ -135,11 +118,6 @@
     height: 1px;
     background: var(--gradient-primary);
     box-shadow: var(--shadow-glow-sm);
-  }
-
-  /* Number styling for pricing/stats */
-  .number-display {
-    @apply tabular-nums font-black;
   }
 }
 
