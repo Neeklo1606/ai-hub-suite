@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Users, MessageSquare, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { VoiceAssistant } from "./VoiceAssistant";
 
 const stats = [
   { icon: Users, value: "50,000+", label: "пользователей" },
@@ -97,6 +98,9 @@ export function HeroSection() {
               Смотреть демо
             </Button>
           </motion.div>
+
+          {/* Voice Assistant Interface */}
+          <VoiceAssistant />
 
           {/* Stats */}
           <motion.div
