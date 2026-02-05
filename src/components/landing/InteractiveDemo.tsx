@@ -1,6 +1,8 @@
- import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
  import { motion, AnimatePresence } from "framer-motion";
- import { Sparkles, Send, Zap, Image, Code, FileText } from "lucide-react";
+import { Sparkles, Send, Zap, Image, Code, FileText, Mic, MicOff } from "lucide-react";
+import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
+import { toast } from "sonner";
  
  const demoPrompts = [
    "Напиши продающий текст для лендинга",
@@ -21,18 +23,94 @@
    { icon: Code, label: "Код", active: false },
  ];
  
+const WaveformBars = () => (
+  <div className="flex items-center gap-0.5 h-5" role="img" aria-label="Запись голоса">
+    {[...Array(4)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="w-1 bg-indigo-500 rounded-full"
+        animate={{ height: ["6px", "16px", "8px", "14px", "6px"] }}
+        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+        aria-hidden="true"
+      />
+    ))}
+  </div>
+);
+
  export function InteractiveDemo() {
    const [displayedPrompt, setDisplayedPrompt] = useState("");
    const [showResponse, setShowResponse] = useState(false);
    const [displayedResponse, setDisplayedResponse] = useState("");
    const [isTyping, setIsTyping] = useState(true);
    const [promptIndex, setPromptIndex] = useState(0);
+  const [userInput, setUserInput] = useState("");
+  const [isUserMode, setIsUserMode] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
  
    const currentPrompt = demoPrompts[promptIndex];
  
+  // Speech recognition hook
+  const {
+    isListening,
+    isSupported,
+    interimTranscript,
+    startListening,
+    stopListening,
+  } = useSpeechRecognition({
+    language: "ru-RU",
+    continuous: false,
+    onResult: (result) => {
+      if (result.isFinal) {
+        setUserInput((prev) => prev + result.transcript);
+        setIsUserMode(true);
+        setIsTyping(false);
+      }
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+    onEnd: () => {
+      // Focus input after voice ends
+      inputRef.current?.focus();
+    },
+  });
+
+  // Handle voice button click
+  const handleVoiceClick = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      // Stop demo animation when user starts speaking
+      setIsTyping(false);
+      setIsUserMode(true);
+      setShowResponse(false);
+      startListening();
+    }
+  };
+
+  // Handle input focus - switch to user mode
+  const handleInputFocus = () => {
+    if (!isUserMode) {
+      setIsTyping(false);
+      setIsUserMode(true);
+      setShowResponse(false);
+      setDisplayedPrompt("");
+    }
+  };
+
+  // Handle send button
+  const handleSend = () => {
+    if (userInput.trim()) {
+      toast.success("Регистрация", {
+        description: "Зарегистрируйтесь, чтобы отправлять запросы к AI",
+      });
+      setUserInput("");
+    }
+  };
+
    // Typing animation for prompt
    useEffect(() => {
-     if (!isTyping) return;
+    if (!isTyping || isUserMode) return;
      
      let charIndex = 0;
      setDisplayedPrompt("");
@@ -53,11 +131,11 @@
      }, 50);
  
      return () => clearInterval(typeInterval);
-   }, [currentPrompt, isTyping, promptIndex]);
+  }, [currentPrompt, isTyping, promptIndex, isUserMode]);
  
    // Typing animation for response
    useEffect(() => {
-     if (!showResponse) return;
+    if (!showResponse || isUserMode) return;
  
      let charIndex = 0;
      const typeInterval = setInterval(() => {
@@ -68,14 +146,16 @@
          clearInterval(typeInterval);
          // Reset after delay
          setTimeout(() => {
-           setPromptIndex((prev) => (prev + 1) % demoPrompts.length);
-           setIsTyping(true);
+          if (!isUserMode) {
+            setPromptIndex((prev) => (prev + 1) % demoPrompts.length);
+            setIsTyping(true);
+          }
          }, 4000);
        }
      }, 15);
  
      return () => clearInterval(typeInterval);
-   }, [showResponse]);
+  }, [showResponse, isUserMode]);
  
    return (
      <motion.div
@@ -139,22 +219,69 @@
            {/* Input area */}
            <div className="relative mb-4">
              <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
+              {/* Voice button */}
+              {isSupported && (
+                <button
+                  onClick={handleVoiceClick}
+                  className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                    isListening
+                      ? "bg-red-500/20 text-red-400 border border-red-500/30"
+                      : "bg-slate-700/50 text-gray-400 hover:text-indigo-400 hover:bg-indigo-500/10 border border-slate-600/50"
+                  }`}
+                  aria-label={isListening ? "Остановить запись" : "Начать запись голоса"}
+                  aria-pressed={isListening}
+                >
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" aria-hidden="true" />
+                  ) : (
+                    <Mic className="w-4 h-4" aria-hidden="true" />
+                  )}
+                </button>
+              )}
+
                <div className="flex-1 min-h-[24px]">
-                 <span className="text-white">
-                   {displayedPrompt}
-                   {isTyping && (
-                     <motion.span
-                       animate={{ opacity: [1, 0] }}
-                       transition={{ duration: 0.5, repeat: Infinity }}
-                       className="inline-block w-0.5 h-5 bg-indigo-400 ml-0.5 align-middle"
-                     />
-                   )}
-                 </span>
-                 {!displayedPrompt && !isTyping && (
-                   <span className="text-gray-500">Введите ваш запрос...</span>
+                {isListening ? (
+                  <div className="flex items-center gap-3">
+                    <WaveformBars />
+                    <span className="text-white">
+                      {interimTranscript || "Слушаю..."}
+                    </span>
+                  </div>
+                ) : isUserMode ? (
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                    placeholder="Введите ваш запрос..."
+                    className="w-full bg-transparent text-white placeholder:text-gray-500 outline-none"
+                    autoFocus
+                  />
+                ) : (
+                  <div 
+                    className="cursor-text" 
+                    onClick={handleInputFocus}
+                  >
+                    <span className="text-white">
+                      {displayedPrompt}
+                      {isTyping && (
+                        <motion.span
+                          animate={{ opacity: [1, 0] }}
+                          transition={{ duration: 0.5, repeat: Infinity }}
+                          className="inline-block w-0.5 h-5 bg-indigo-400 ml-0.5 align-middle"
+                        />
+                      )}
+                    </span>
+                    {!displayedPrompt && !isTyping && (
+                      <span className="text-gray-500">Введите ваш запрос...</span>
+                    )}
+                  </div>
                  )}
                </div>
+
                <button 
+                onClick={handleSend}
                  className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-shadow"
                  aria-label="Отправить запрос"
                >
@@ -165,7 +292,7 @@
  
            {/* Response area */}
            <AnimatePresence>
-             {showResponse && (
+            {showResponse && !isUserMode && (
                <motion.div
                  initial={{ opacity: 0, y: 10, height: 0 }}
                  animate={{ opacity: 1, y: 0, height: "auto" }}
@@ -203,11 +330,19 @@
            {/* Footer hints */}
            <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-800/50">
              <div className="flex items-center gap-4">
-               <span className="text-xs text-gray-500">Попробуйте:</span>
-               {["Текст", "Изображение", "Код"].map((hint, i) => (
+              <span className="text-xs text-gray-500">
+                {isSupported ? "🎤 Голос или текст" : "Попробуйте:"}
+              </span>
+              {!isListening && ["Текст", "Изображение", "Код"].map((hint, i) => (
                  <button
                    key={i}
                    className="text-xs text-gray-400 hover:text-indigo-400 transition-colors"
+                  onClick={() => {
+                    setIsUserMode(true);
+                    setIsTyping(false);
+                    setUserInput(hint === "Текст" ? "Напиши " : hint === "Изображение" ? "Сгенерируй " : "Напиши код ");
+                    inputRef.current?.focus();
+                  }}
                  >
                    {hint}
                  </button>
