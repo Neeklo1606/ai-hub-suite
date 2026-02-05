@@ -16,6 +16,12 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
+import Possibilities from "./pages/Possibilities";
+import Business from "./pages/Business";
+import Reviews from "./pages/Reviews";
+import Pricing from "./pages/Pricing";
+import FAQ from "./pages/FAQ";
+import Blog from "./pages/Blog";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +33,12 @@ const App = () => (
         <Sonner />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/possibilities" element={<Possibilities />} />
+          <Route path="/business" element={<Business />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/blog" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
