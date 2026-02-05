@@ -47,10 +47,10 @@ export function HowItWorksSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
             Как это работает
           </h2>
-          <p className="text-slate-400 text-base max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             Три простых шага до результата
           </p>
         </motion.div>
@@ -69,13 +69,13 @@ export function HowItWorksSection() {
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-700/40 backdrop-blur-sm border border-slate-700/50 flex items-center justify-center shadow-lg shadow-indigo-500/10">
                   <step.icon className="w-10 h-10 text-indigo-400" />
                 </div>
-                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-[#6366f1] to-[#a855f7] text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-indigo-500/40">
+                <span className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-[#6366f1] to-[#a855f7] text-white text-sm font-black flex items-center justify-center shadow-lg shadow-indigo-500/40 tabular-nums">
                   {step.number}
                 </span>
               </div>
               
-              <h3 className="text-2xl font-semibold text-white mb-3">{step.title}</h3>
-              <p className="text-base text-slate-400 max-w-xs">{step.description}</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">{step.title}</h3>
+              <p className="text-base md:text-lg text-slate-400 max-w-xs leading-relaxed">{step.description}</p>
             </motion.div>
           ))}
         </div>

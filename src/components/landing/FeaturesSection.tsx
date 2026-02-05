@@ -60,10 +60,10 @@ export function FeaturesSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
             Почему выбирают нас
           </h2>
-          <p className="text-slate-400 text-base max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             Созданы для российских пользователей и бизнеса
           </p>
         </motion.div>
@@ -84,8 +84,8 @@ export function FeaturesSection() {
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#6366f1]/20 to-[#8b5cf6]/20 border border-indigo-500/20 flex items-center justify-center mb-6 shadow-lg shadow-indigo-500/10">
                 <feature.icon className="w-7 h-7 text-indigo-400" />
               </div>
-              <h3 className="text-2xl font-semibold text-white mb-3">{feature.title}</h3>
-              <p className="text-slate-400 text-base leading-relaxed">{feature.description}</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">{feature.title}</h3>
+              <p className="text-slate-400 text-base md:text-lg leading-relaxed">{feature.description}</p>
             </motion.div>
           ))}
         </div>

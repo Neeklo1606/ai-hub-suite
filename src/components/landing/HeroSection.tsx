@@ -38,9 +38,9 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight will-change-transform mb-4"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-[1.1] will-change-transform mb-6 text-shadow-glow"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+            <span className="gradient-text-heading">
               100+ нейросетей
             </span>
             <br />
@@ -49,12 +49,12 @@ export function HeroSection() {
             </span>
           </motion.h1>
 
-          {/* Subtitle */}
+          {/* Subtitle - larger */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-lg sm:text-xl text-slate-400 max-w-2xl mb-8"
+            className="text-xl md:text-2xl lg:text-3xl font-normal text-slate-300 max-w-3xl leading-relaxed mb-10"
           >
             Текст, изображения, видео, аудио, код — всё без VPN. Платите только за использование.
           </motion.p>

@@ -89,10 +89,10 @@ export function ModelsSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 id="models-heading" className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
+          <h2 id="models-heading" className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6 gradient-text-heading text-shadow-glow">
             Все типы AI-моделей
           </h2>
-          <p className="text-slate-400 text-base max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
             Выбирайте из 100+ нейросетей для любых задач
           </p>
         </motion.div>
@@ -129,7 +129,7 @@ export function ModelsSection() {
                   <category.icon className="w-10 h-10 text-white" aria-hidden="true" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-white transition-colors">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-white transition-colors tracking-tight">
                   {category.title}
                 </h3>
                 
