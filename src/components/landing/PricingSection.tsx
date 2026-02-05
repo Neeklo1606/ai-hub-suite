@@ -31,20 +31,18 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-24 bg-[#0a0a0a]">
+    <section id="pricing" className="py-24 bg-[#FAFAFA]">
       <div className="container px-4 max-w-4xl mx-auto">
         
-        {/* Heading */}
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-2xl font-semibold text-white mb-8 text-center"
+          className="text-3xl font-bold text-[#1A1A1A] mb-12 text-center"
         >
           Тарифы
         </motion.h2>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {plans.map((plan, index) => (
             <motion.div
@@ -56,47 +54,48 @@ export function PricingSection() {
               className={cn(
                 "p-6 rounded-2xl transition-all duration-200 flex flex-col items-center text-center",
                 plan.popular
-                  ? "bg-[#8b5cf6] border border-[#8b5cf6]"
-                  : "bg-[#1a1a1a] border border-[#2a2a2a] hover:border-[#404040]"
+                  ? "bg-[#8B5CF6]"
+                  : "bg-white border border-[#E5E5E5] hover:border-[#8B5CF6]"
               )}
             >
-              {/* Plan name */}
               <span className={cn(
                 "text-sm font-medium mb-4",
-                plan.popular ? "text-white/80" : "text-gray-500"
+                plan.popular ? "text-white/80" : "text-[#999999]"
               )}>
                 {plan.name}
               </span>
 
-              {/* Price */}
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-4xl font-bold text-white">{plan.price}</span>
+                <span className={cn(
+                  "text-4xl font-bold",
+                  plan.popular ? "text-white" : "text-[#1A1A1A]"
+                )}>
+                  {plan.price}
+                </span>
                 {plan.period && (
                   <span className={cn(
                     "text-sm",
-                    plan.popular ? "text-white/60" : "text-gray-500"
+                    plan.popular ? "text-white/60" : "text-[#999999]"
                   )}>
                     {plan.period}
                   </span>
                 )}
               </div>
 
-              {/* Description */}
               <span className={cn(
                 "text-sm mb-6",
-                plan.popular ? "text-white/70" : "text-gray-500"
+                plan.popular ? "text-white/70" : "text-[#666666]"
               )}>
                 {plan.description}
               </span>
 
-              {/* CTA */}
               <Link
                 to="/register"
                 className={cn(
                   "w-full py-3 px-6 rounded-full text-sm font-medium transition-all duration-200 text-center",
                   plan.popular
-                    ? "bg-white text-[#8b5cf6] hover:bg-gray-100"
-                    : "bg-[#2a2a2a] text-white hover:bg-[#3a3a3a] border border-[#404040]"
+                    ? "bg-white text-[#8B5CF6] hover:bg-gray-100"
+                    : "bg-[#1A1A1A] text-white hover:bg-[#333333]"
                 )}
               >
                 {plan.cta}
