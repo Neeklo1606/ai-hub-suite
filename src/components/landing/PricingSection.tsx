@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, Sparkles } from "lucide-react";
+import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const plans = [
@@ -68,79 +68,62 @@ const plans = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-12 sm:py-16 md:py-20 lg:py-28 relative bg-slate-900/50">
+    <section id="pricing" className="py-24 relative">
       <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-12 md:mb-16"
+          transition={{ duration: 0.3 }}
+          className="text-center mb-16"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
+          <h2 className="text-4xl font-bold text-white mb-6">
             Простые и честные цены
           </h2>
-          <p className="text-slate-400 text-base sm:text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="text-gray-400 text-base max-w-2xl mx-auto">
             Выберите план, который подходит вам
           </p>
         </motion.div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4 md:gap-6"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              variants={itemVariants}
-              whileHover={{ scale: plan.popular ? 1.02 : 1.01, y: -4 }}
-              className={`relative p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border transition-all duration-300 ${
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              className={`relative p-8 rounded-2xl transition-all duration-300 ${
                 plan.popular
-                  ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/10 border-indigo-500/50 shadow-lg shadow-indigo-500/20 lg:scale-105"
-                  : "bg-slate-800/30 border-slate-700/50 hover:border-slate-600"
+                  ? "bg-gradient-to-b from-indigo-500/10 to-purple-500/10 shadow-xl lg:scale-105"
+                  : "bg-slate-800/30 hover:bg-slate-800/50"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-semibold flex items-center gap-1 sm:gap-1.5 shadow-lg whitespace-nowrap">
-                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-semibold shadow-lg">
                   Популярный
                 </div>
               )}
 
-              <div className="mb-4 sm:mb-6">
-                <h3 className="text-lg sm:text-xl font-semibold text-white mb-1">{plan.name}</h3>
-                <p className="text-xs sm:text-sm text-slate-400">{plan.description}</p>
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold text-white mb-2">{plan.name}</h3>
+                <p className="text-sm text-gray-500">{plan.description}</p>
               </div>
 
-              <div className="mb-4 sm:mb-6">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{plan.price}</span>
-                  {plan.period && <span className="text-slate-400">{plan.period}</span>}
+              <div className="mb-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-white">{plan.price}</span>
+                  {plan.period && <span className="text-gray-500 text-sm">{plan.period}</span>}
                 </div>
               </div>
 
-              <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+              <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm">
-                    <Check className={`w-4 h-4 sm:w-5 sm:h-5 shrink-0 mt-0.5 ${plan.popular ? 'text-indigo-400' : 'text-slate-400'}`} />
-                    <span className="text-slate-300 leading-tight">{feature}</span>
+                  <li key={featureIndex} className="flex items-start gap-3 text-sm">
+                    <Check className={`w-5 h-5 shrink-0 mt-0.5 ${plan.popular ? 'text-indigo-400' : 'text-gray-500'}`} />
+                    <span className="text-gray-400">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -156,7 +139,7 @@ export function PricingSection() {
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
