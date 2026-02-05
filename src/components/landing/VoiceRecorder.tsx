@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mic, MicOff, Square, Loader2 } from "lucide-react";
+import { Mic, Square, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 
 interface VoiceRecorderProps {
   onTranscript: (text: string) => void;
@@ -12,12 +12,12 @@ interface VoiceRecorderProps {
 
 // Animated waveform visualization
 const WaveformBars = () => (
-  <div className="flex items-center gap-0.5 h-5" role="img" aria-label="Запись голоса">
+  <div className="flex items-center gap-0.5 h-6" role="img" aria-label="Запись голоса">
     {[...Array(5)].map((_, i) => (
       <motion.div
         key={i}
-        className="w-1 bg-destructive rounded-full"
-        animate={{ height: ["4px", "16px", "8px", "14px", "4px"] }}
+        className="w-1 bg-red-500 rounded-full"
+        animate={{ height: ["6px", "20px", "10px", "18px", "6px"] }}
         transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.08, ease: "easeInOut" }}
         aria-hidden="true"
       />
@@ -29,7 +29,6 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
   const [isRecording, setIsRecording] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
-  const [currentTranscript, setCurrentTranscript] = useState("");
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -87,7 +86,6 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
       const result = await response.json();
       if (result.text) {
         onTranscript(result.text);
-        setCurrentTranscript(result.text);
       }
     } catch (error) {
       console.error("Transcription error:", error);
@@ -98,7 +96,6 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
   const startRecording = useCallback(async () => {
     setIsConnecting(true);
     try {
-      // Request microphone permission
       const stream = await navigator.mediaDevices.getUserMedia({ 
         audio: {
           echoCancellation: true,
@@ -132,10 +129,9 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
         }
       };
 
-      mediaRecorder.start(1000); // Collect data every second
+      mediaRecorder.start(1000);
       setIsRecording(true);
       setRecordingTime(0);
-      setCurrentTranscript("");
       onRecordingChange?.(true);
       
     } catch (error) {
@@ -154,7 +150,6 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       
-      // Stop all tracks
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
@@ -186,18 +181,18 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="flex items-center gap-3 px-3 py-2 rounded-xl bg-destructive/10 border border-destructive/30"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-red-500/15 border border-red-500/30"
           >
             <WaveformBars />
-            <span className="text-destructive font-mono text-sm min-w-[45px]">
+            <span className="text-red-400 font-mono text-sm min-w-[50px] font-medium">
               {formatTime(recordingTime)}
             </span>
             <button
               onClick={stopRecording}
-              className="w-8 h-8 rounded-lg bg-destructive/20 hover:bg-destructive/30 flex items-center justify-center text-destructive transition-colors"
+              className="w-9 h-9 rounded-lg bg-red-500/25 hover:bg-red-500/40 flex items-center justify-center text-red-400 transition-colors"
               aria-label="Остановить запись"
             >
-              <Square className="w-3.5 h-3.5 fill-current" />
+              <Square className="w-4 h-4 fill-current" />
             </button>
           </motion.div>
         ) : (
@@ -208,17 +203,23 @@ export function VoiceRecorder({ onTranscript, onRecordingChange, disabled }: Voi
             exit={{ opacity: 0, scale: 0.9 }}
             onClick={startRecording}
             disabled={disabled || isConnecting}
-            className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+            className={cn(
+              "flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300",
               isConnecting
                 ? "bg-slate-700/50 text-gray-500 cursor-wait"
-                : "bg-slate-700/50 text-gray-400 hover:text-primary hover:bg-primary/10 border border-slate-600/50 hover:border-primary/30"
-            }`}
+                : "bg-slate-700/50 text-gray-400 hover:text-primary hover:bg-primary/15 border border-slate-600/50 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/20"
+            )}
             aria-label="Начать запись голоса"
           >
             {isConnecting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              <Mic className="w-4 h-4" />
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Mic className="w-5 h-5" />
+              </motion.div>
             )}
           </motion.button>
         )}
