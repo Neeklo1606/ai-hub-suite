@@ -38,7 +38,7 @@ export function Header() {
     <>
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#8b5cf6] focus:text-white focus:rounded-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#8B5CF6] focus:text-white focus:rounded-lg"
       >
         Перейти к содержимому
       </a>
@@ -46,8 +46,8 @@ export function Header() {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
           scrolled 
-            ? "bg-black/95 backdrop-blur-sm border-b border-[#2a2a2a]" 
-            : "bg-[#0f0f0f] border-b border-[#2a2a2a]"
+            ? "bg-white/95 backdrop-blur-sm border-b border-[#E5E5E5]" 
+            : "bg-[#FAFAFA] border-b border-transparent"
         }`}
         role="banner"
       >
@@ -55,7 +55,7 @@ export function Header() {
           <div className="flex items-center justify-between h-full">
             
             {/* Logo */}
-            <Link to="/" className="text-xl font-semibold text-white" aria-label="AI Hub - Главная">
+            <Link to="/" className="text-xl font-semibold text-[#1A1A1A]" aria-label="AI Hub - Главная">
               AI Hub
             </Link>
 
@@ -67,8 +67,8 @@ export function Header() {
                   to={link.href}
                   className={`text-sm transition-colors ${
                     isActiveLink(link.href)
-                      ? "text-white"
-                      : "text-gray-400 hover:text-white"
+                      ? "text-[#1A1A1A]"
+                      : "text-[#666666] hover:text-[#1A1A1A]"
                   }`}
                   aria-current={isActiveLink(link.href) ? "page" : undefined}
                 >
@@ -81,13 +81,13 @@ export function Header() {
             <div className="hidden md:flex items-center gap-4">
               <Link 
                 to="/login"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-[#666666] hover:text-[#1A1A1A] transition-colors"
               >
                 Войти
               </Link>
               <Link 
                 to="/register"
-                className="px-6 py-2 bg-[#8b5cf6] hover:bg-[#7c3aed] rounded-full text-sm text-white transition-colors"
+                className="px-6 py-2 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-full text-sm text-white transition-colors"
               >
                 Начать
               </Link>
@@ -95,7 +95,7 @@ export function Header() {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+              className="md:hidden p-2 text-[#666666] hover:text-[#1A1A1A] transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileMenuOpen}
@@ -113,7 +113,7 @@ export function Header() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-[#0f0f0f] border-b border-[#2a2a2a] overflow-hidden"
+              className="md:hidden bg-white border-b border-[#E5E5E5] overflow-hidden"
             >
               <nav className="container px-4 py-4 flex flex-col gap-1">
                 {navLinks.map((link) => (
@@ -122,26 +122,26 @@ export function Header() {
                     to={link.href}
                     className={`px-4 py-3 text-sm rounded-lg transition-colors ${
                       isActiveLink(link.href)
-                        ? "text-white bg-[#1a1a1a]"
-                        : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
+                        ? "text-[#1A1A1A] bg-[#F5F5F5]"
+                        : "text-[#666666] hover:text-[#1A1A1A] hover:bg-[#F5F5F5]"
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
                   </Link>
                 ))}
-                <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-[#2a2a2a]">
+                <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-[#E5E5E5]">
                   <Link 
                     to="/login" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-3 text-sm text-gray-400 hover:text-white text-center transition-colors"
+                    className="px-4 py-3 text-sm text-[#666666] hover:text-[#1A1A1A] text-center transition-colors"
                   >
                     Войти
                   </Link>
                   <Link 
                     to="/register" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="px-6 py-3 bg-[#8b5cf6] hover:bg-[#7c3aed] rounded-full text-sm text-white text-center transition-colors"
+                    className="px-6 py-3 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-full text-sm text-white text-center transition-colors"
                   >
                     Начать
                   </Link>

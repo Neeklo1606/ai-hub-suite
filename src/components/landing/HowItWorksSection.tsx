@@ -8,14 +8,14 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-24 bg-[#0f0f0f]">
+    <section className="py-24 bg-[#FAFAFA]">
       <div className="container px-4 max-w-3xl mx-auto">
         
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-2xl font-semibold text-white mb-12 text-center"
+          className="text-3xl font-bold text-[#1A1A1A] mb-12 text-center"
         >
           Как это работает
         </motion.h2>
@@ -30,10 +30,10 @@ export function HowItWorksSection() {
               transition={{ delay: index * 0.1 }}
               className="flex flex-col items-center text-center"
             >
-              <div className="w-12 h-12 rounded-full bg-[#8b5cf6] flex items-center justify-center text-white font-semibold mb-4">
+              <div className="w-12 h-12 rounded-full bg-[#8B5CF6] flex items-center justify-center text-white font-semibold mb-4">
                 {step.number}
               </div>
-              <span className="text-sm text-white">{step.title}</span>
+              <span className="text-sm text-[#1A1A1A]">{step.title}</span>
             </motion.div>
           ))}
         </div>
