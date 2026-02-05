@@ -11,10 +11,10 @@ const categories = [
     models: ["GPT-4 Turbo", "Claude Opus", "Gemini Ultra", "GigaChat"],
     total: 15,
     description: "Генерация текста, переводы, суммаризация",
-    gradient: "from-blue-500 via-cyan-500 to-blue-600",
-    glowColor: "shadow-blue-500/30",
-    hoverGlow: "group-hover:shadow-blue-500/40",
-    hoverBorder: "group-hover:border-blue-500/50",
+    gradient: "from-[#3b82f6] to-[#06b6d4]",
+    glowColor: "shadow-blue-500/20",
+    hoverGlow: "group-hover:shadow-blue-500/30",
+    hoverBorder: "group-hover:border-[#3b82f6]/50",
     linkColor: "text-blue-400",
     linkHover: "group-hover:text-blue-300",
   },
@@ -25,10 +25,10 @@ const categories = [
     models: ["Midjourney v6", "DALL-E 3", "Stable Diffusion XL", "Kandinsky 3"],
     total: 12,
     description: "Создание и редактирование изображений",
-    gradient: "from-purple-500 via-pink-500 to-purple-600",
-    glowColor: "shadow-purple-500/30",
-    hoverGlow: "group-hover:shadow-purple-500/40",
-    hoverBorder: "group-hover:border-purple-500/50",
+    gradient: "from-[#8b5cf6] to-[#ec4899]",
+    glowColor: "shadow-purple-500/20",
+    hoverGlow: "group-hover:shadow-purple-500/30",
+    hoverBorder: "group-hover:border-[#8b5cf6]/50",
     linkColor: "text-purple-400",
     linkHover: "group-hover:text-purple-300",
   },
@@ -39,10 +39,10 @@ const categories = [
     models: ["Sora", "Runway Gen-3", "Pika Labs", "Kling AI"],
     total: 8,
     description: "Генерация и монтаж видео",
-    gradient: "from-orange-500 via-red-500 to-orange-600",
-    glowColor: "shadow-orange-500/30",
-    hoverGlow: "group-hover:shadow-orange-500/40",
-    hoverBorder: "group-hover:border-orange-500/50",
+    gradient: "from-[#f97316] to-[#ef4444]",
+    glowColor: "shadow-orange-500/20",
+    hoverGlow: "group-hover:shadow-orange-500/30",
+    hoverBorder: "group-hover:border-[#f97316]/50",
     linkColor: "text-orange-400",
     linkHover: "group-hover:text-orange-300",
   },
@@ -53,10 +53,10 @@ const categories = [
     models: ["ElevenLabs", "Suno AI", "Whisper", "XTTS v2"],
     total: 9,
     description: "Озвучка, музыка, транскрибация",
-    gradient: "from-green-500 via-emerald-500 to-green-600",
-    glowColor: "shadow-green-500/30",
-    hoverGlow: "group-hover:shadow-emerald-500/40",
-    hoverBorder: "group-hover:border-emerald-500/50",
+    gradient: "from-[#10b981] to-[#14b8a6]",
+    glowColor: "shadow-green-500/20",
+    hoverGlow: "group-hover:shadow-emerald-500/30",
+    hoverBorder: "group-hover:border-[#10b981]/50",
     linkColor: "text-emerald-400",
     linkHover: "group-hover:text-emerald-300",
   },
@@ -64,8 +64,24 @@ const categories = [
 
 export function ModelsSection() {
   return (
-    <section id="models" className="py-24 relative bg-slate-900/50" aria-labelledby="models-heading">
-      <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section 
+      id="models" 
+      className="py-24 relative" 
+      aria-labelledby="models-heading"
+      style={{
+        background: "linear-gradient(180deg, hsl(222 47% 6%) 0%, hsl(217 33% 10%) 50%, hsl(222 47% 6%) 100%)"
+      }}
+    >
+      {/* Subtle radial glow */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 60% 40% at 50% 0%, hsla(263 70% 50% / 0.1), transparent 50%)"
+        }}
+        aria-hidden="true"
+      />
+      
+      <div className="container relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,10 +89,10 @@ export function ModelsSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 id="models-heading" className="text-4xl font-bold text-white mb-6">
+          <h2 id="models-heading" className="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-white">
             Все типы AI-моделей
           </h2>
-          <p className="text-gray-400 text-base max-w-2xl mx-auto">
+          <p className="text-slate-400 text-base max-w-2xl mx-auto">
             Выбирайте из 100+ нейросетей для любых задач
           </p>
         </motion.div>
