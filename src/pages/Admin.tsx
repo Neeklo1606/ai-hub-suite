@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -103,14 +102,14 @@ export default function Admin() {
 
   if (isLoading) {
     return (
-      <DashboardLayout>
+      <AdminLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
             <p className="text-sm text-muted-foreground">Загрузка настроек...</p>
           </div>
         </div>
-      </DashboardLayout>
+      </AdminLayout>
     );
   }
 
@@ -119,7 +118,7 @@ export default function Admin() {
   }
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div className="p-6 lg:p-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
@@ -389,6 +388,6 @@ export default function Admin() {
           </TabsContent>
         </Tabs>
       </div>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }
