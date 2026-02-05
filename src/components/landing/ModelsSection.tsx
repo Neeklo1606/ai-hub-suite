@@ -1,91 +1,54 @@
 import { motion } from "framer-motion";
-import { MessageSquare, Image, Video, Music, ArrowRight } from "lucide-react";
+import { MessageSquare, Image, Video, Music } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const categories = [
-  {
-    icon: MessageSquare,
-    title: "Текст",
-    models: ["GPT-4 Turbo", "Claude Opus", "Gemini Ultra", "GigaChat"],
-    total: 15,
-    description: "Генерация текста, переводы, суммаризация",
-  },
-  {
-    icon: Image,
-    title: "Изображения",
-    models: ["Midjourney v6", "DALL-E 3", "Stable Diffusion XL", "Kandinsky 3"],
-    total: 12,
-    description: "Создание и редактирование изображений",
-  },
-  {
-    icon: Video,
-    title: "Видео",
-    models: ["Sora", "Runway Gen-3", "Pika Labs", "Kling AI"],
-    total: 8,
-    description: "Генерация и монтаж видео",
-  },
-  {
-    icon: Music,
-    title: "Аудио",
-    models: ["ElevenLabs", "Suno AI", "Whisper", "XTTS v2"],
-    total: 9,
-    description: "Озвучка, музыка, транскрибация",
-  },
+  { icon: MessageSquare, title: "Текст", gradient: "from-blue-500 to-cyan-500", count: "15+" },
+  { icon: Image, title: "Изображения", gradient: "from-purple-500 to-pink-500", count: "12+" },
+  { icon: Video, title: "Видео", gradient: "from-orange-500 to-red-500", count: "8+" },
+  { icon: Music, title: "Аудио", gradient: "from-green-500 to-emerald-500", count: "9+" },
 ];
 
 export function ModelsSection() {
   return (
-    <section id="models" className="py-24 relative bg-slate-900/50" aria-labelledby="models-heading">
-      <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
+    <section id="models" className="py-24 bg-[#0a0a0a]">
+      <div className="container px-4 max-w-5xl mx-auto">
+        
+        {/* Section heading */}
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.3 }}
-          className="text-center mb-16"
+          className="text-2xl font-semibold text-white mb-8 text-center"
         >
-          <h2 id="models-heading" className="text-4xl font-bold text-white mb-6">
-            Все типы AI-моделей
-          </h2>
-          <p className="text-gray-400 text-base max-w-2xl mx-auto">
-            Выбирайте из 100+ нейросетей для любых задач
-          </p>
-        </motion.div>
+          Категории моделей
+        </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+        {/* Cards grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categories.map((category, index) => (
-            <motion.div
-              key={index}
+            <motion.button
+              key={category.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
-              whileHover={{ y: -5 }}
-              className="group p-8 rounded-2xl bg-slate-800/40 border border-slate-700/40 hover:border-indigo-500/30 transition-all duration-300 will-change-transform"
-              role="listitem"
+              transition={{ delay: index * 0.05 }}
+              className="p-6 bg-[#1a1a1a] hover:bg-[#2a2a2a] border border-[#2a2a2a] hover:border-[#404040] rounded-2xl cursor-pointer transition-all duration-200 flex flex-col items-center gap-4"
             >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6">
-                <category.icon className="w-8 h-8 text-white" aria-hidden="true" />
+              {/* Icon */}
+              <div className={cn(
+                "w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br",
+                category.gradient
+              )}>
+                <category.icon className="w-7 h-7 text-white" />
               </div>
               
-              <h3 className="text-2xl font-bold text-white mb-4">{category.title}</h3>
+              {/* Title */}
+              <span className="text-base font-medium text-white">{category.title}</span>
               
-              <ul className="space-y-2 mb-4" aria-label={`Модели для ${category.title}`}>
-                {category.models.map((model, modelIndex) => (
-                  <li key={modelIndex} className="text-sm text-gray-400 leading-relaxed">
-                    {model}
-                  </li>
-                ))}
-              </ul>
-              
-              <a 
-                href="#" 
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors duration-300 mt-4"
-                aria-label={`Смотреть все ${category.total} моделей для ${category.title}`}
-              >
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                Смотреть все ({category.total})
-              </a>
-            </motion.div>
+              {/* Count badge */}
+              <span className="text-xs text-gray-500">{category.count} моделей</span>
+            </motion.button>
           ))}
         </div>
       </div>
