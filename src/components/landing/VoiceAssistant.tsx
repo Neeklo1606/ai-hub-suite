@@ -11,13 +11,14 @@ const quickActions = [
 ];
 
 const WaveformBars = () => (
-  <div className="flex items-center gap-0.5 h-6">
+  <div className="flex items-center gap-0.5 h-6" role="img" aria-label="Аудиовизуализация">
     {[...Array(5)].map((_, i) => (
      <motion.div
         key={i}
         className="w-1 bg-indigo-500 rounded-full"
         animate={{ height: ["8px", "24px", "12px", "20px", "8px"] }}
         transition={{ duration: 1, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+        aria-hidden="true"
       />
     ))}
   </div>
@@ -32,6 +33,8 @@ export function VoiceAssistant() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.5 }}
       className="w-full max-w-2xl mx-auto mt-12"
+      role="region"
+      aria-label="Голосовой помощник"
     >
       <div className="p-6 bg-slate-800/30 rounded-2xl">
         <div className="flex items-center gap-4 mb-6">
@@ -42,11 +45,13 @@ export function VoiceAssistant() {
                 ? "bg-purple-600 shadow-lg"
                 : "bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg"
             }`}
+            aria-label={isRecording ? "Остановить запись" : "Начать запись голоса"}
+            aria-pressed={isRecording}
           >
             {isRecording ? (
-              <MicOff className="w-6 h-6 text-white" />
+              <MicOff className="w-6 h-6 text-white" aria-hidden="true" />
             ) : (
-              <Mic className="w-6 h-6 text-white" />
+              <Mic className="w-6 h-6 text-white" aria-hidden="true" />
             )}
           </button>
 
@@ -59,6 +64,7 @@ export function VoiceAssistant() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="flex items-center gap-3"
+                  aria-live="polite"
                 >
                   <WaveformBars />
                   <span className="text-base text-white font-medium">Слушаю...</span>
@@ -78,15 +84,17 @@ export function VoiceAssistant() {
           </div>
        </div>
 
-        <div className="flex gap-3 overflow-x-auto pb-1">
+        <div className="flex gap-3 overflow-x-auto pb-1" role="list" aria-label="Быстрые действия">
           {quickActions.map((action, index) => (
             <a
               key={index}
               href={action.href}
-              className="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300"
+              className="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 will-change-transform"
+              role="listitem"
+              aria-label={`Перейти к моделям для ${action.label}`}
             >
               <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-2">
-                <action.icon className="w-4 h-4 text-indigo-400" />
+                <action.icon className="w-4 h-4 text-indigo-400" aria-hidden="true" />
               </div>
               <span className="text-xs text-gray-400">{action.label}</span>
             </a>

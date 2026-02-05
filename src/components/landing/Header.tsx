@@ -43,25 +43,35 @@ export function Header() {
   }, []);
 
   return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-slate-950/95 backdrop-blur-lg border-b border-slate-700/50 shadow-lg shadow-black/20" 
-          : "bg-transparent"
-      }`}
-    >
+    <>
+      {/* Skip to main content link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg"
+      >
+        Перейти к содержимому
+      </a>
+      
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "bg-slate-950/95 backdrop-blur-lg border-b border-slate-700/50 shadow-lg shadow-black/20" 
+            : "bg-transparent"
+        }`}
+        role="banner"
+      >
       <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
+          <Link to="/" className="flex items-center gap-2.5 group" aria-label="AI Hub - Главная страница">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-shadow">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
             </div>
             <span className="text-lg sm:text-xl font-bold text-white">AI Hub</span>
           </Link>
 
           {/* Tablet Navigation (md-lg) */}
-          <nav className="hidden md:flex lg:hidden items-center gap-1">
+          <nav className="hidden md:flex lg:hidden items-center gap-1" aria-label="Навигация">
             {navLinks
               .filter((link) => tabletLinks.includes(link.label))
               .map((link, index) => (
@@ -73,6 +83,7 @@ export function Header() {
                       ? "text-indigo-400 border-b-2 border-indigo-400"
                       : "text-slate-400 hover:text-white"
                   }`}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
                 >
                   {link.label}
                 </Link>
@@ -81,7 +92,7 @@ export function Header() {
           </nav>
 
           {/* Desktop Navigation (lg+) */}
-          <nav className="hidden lg:flex items-center gap-0.5">
+          <nav className="hidden lg:flex items-center gap-0.5" aria-label="Навигация">
             {navLinks.map((link, index) => (
               <Link
                 key={index}
@@ -91,6 +102,7 @@ export function Header() {
                     ? "text-indigo-400 border-b-2 border-indigo-400"
                     : "text-slate-400 hover:text-white"
                 }`}
+                aria-current={isActiveLink(link.href) ? "page" : undefined}
               >
                 {link.label}
               </Link>
@@ -125,11 +137,13 @@ export function Header() {
             className="md:hidden p-2 sm:p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {mobileMenuOpen ? (
-              <X className="w-5 h-5 text-white" />
+              <X className="w-5 h-5 text-white" aria-hidden="true" />
             ) : (
-              <Menu className="w-5 h-5 text-white" />
+              <Menu className="w-5 h-5 text-white" aria-hidden="true" />
             )}
           </button>
         </div>
@@ -139,13 +153,14 @@ export function Header() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="md:hidden border-t border-slate-700/50 bg-slate-950/98 backdrop-blur-lg overflow-hidden"
           >
-            <nav className="container px-4 py-4 sm:py-6 flex flex-col gap-0.5">
+            <nav className="container px-4 py-4 sm:py-6 flex flex-col gap-0.5" aria-label="Мобильная навигация">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={index}
@@ -161,6 +176,7 @@ export function Header() {
                         : "text-slate-300 hover:text-white"
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
+                    aria-current={isActiveLink(link.href) ? "page" : undefined}
                   >
                     {link.label}
                   </Link>
@@ -183,5 +199,6 @@ export function Header() {
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 }
