@@ -148,11 +148,8 @@ export function PricingSection() {
               <Link to="/register">
                 <Button
                   size="sm"
-                  className={`w-full ${
-                    plan.popular
-                      ? "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30"
-                      : "bg-slate-700 hover:bg-slate-600 text-white"
-                  } text-sm sm:text-base py-2 sm:py-2.5`}
+                  variant={plan.popular ? "default" : "secondary"}
+                  className="w-full"
                 >
                   {plan.cta}
                 </Button>

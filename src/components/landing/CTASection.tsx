@@ -52,7 +52,7 @@ export function CTASection() {
             >
               <Button 
                 size="lg"
-                className="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/50 hover:shadow-indigo-500/70 transition-all text-base sm:text-lg px-8 sm:px-10 py-5 sm:py-7 h-auto mb-8 sm:mb-10"
+                className="mb-8 sm:mb-10"
               >
                 Начать работу
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />

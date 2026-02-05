@@ -5,26 +5,35 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_hsla(217,91%,60%,0.3)] hover:shadow-[0_0_30px_hsla(217,91%,60%,0.4)]",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        hero: "bg-gradient-to-r from-primary to-secondary text-white font-semibold shadow-lg hover:shadow-xl shadow-[0_0_30px_hsla(217,91%,60%,0.4)] hover:shadow-[0_0_40px_hsla(217,91%,60%,0.5)] hover:scale-105 transition-all duration-300",
-        heroOutline: "border border-primary/50 bg-transparent text-foreground hover:bg-primary/10 hover:border-primary transition-all duration-300",
-        neon: "relative bg-transparent border border-primary text-primary hover:bg-primary/10",
+        // PRIMARY CTA - gradient indigo to purple
+        default: "rounded-xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white font-semibold shadow-lg shadow-indigo-500/30 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50",
+        // SECONDARY - transparent with border
+        secondary: "rounded-xl bg-transparent border-2 border-slate-500/30 text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
+        // OUTLINE - similar to secondary but lighter
+        outline: "rounded-xl border-2 border-slate-600/50 bg-transparent text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
+        // GHOST - minimal, for icon buttons and subtle actions
+        ghost: "rounded-lg bg-transparent text-slate-400 hover:bg-slate-800/50 hover:text-white",
+        // LINK - text button style
+        link: "text-slate-400 hover:text-indigo-400 underline-offset-4 hover:underline bg-transparent",
+        // DESTRUCTIVE
+        destructive: "rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-lg shadow-red-500/20",
+        // HERO variant - same as default but larger shadow
+        hero: "rounded-xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white font-semibold shadow-lg shadow-indigo-500/40 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/60",
+        // HERO OUTLINE - for secondary hero actions
+        heroOutline: "rounded-xl bg-transparent border-2 border-slate-600 text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
+        // NEON - special effect button
+        neon: "rounded-xl relative bg-transparent border-2 border-indigo-500/50 text-indigo-400 hover:bg-indigo-500/10 hover:border-indigo-400",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-lg px-8 text-base",
-        xl: "h-14 rounded-xl px-10 text-lg",
-        icon: "h-10 w-10",
+        default: "h-12 px-8 py-4 text-base",
+        sm: "h-10 px-6 py-2 text-sm",
+        lg: "h-14 px-10 py-5 text-base font-semibold",
+        xl: "h-16 px-12 py-6 text-lg font-semibold",
+        icon: "h-10 w-10 rounded-lg",
       },
     },
     defaultVariants: {

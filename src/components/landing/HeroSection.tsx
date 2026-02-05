@@ -82,16 +82,16 @@ export function HeroSection() {
             <Link to="/register" className="w-full sm:w-auto">
               <Button 
                 size="lg" 
-                className="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/50 hover:shadow-indigo-500/70 transition-all text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 h-auto"
+                className="w-full sm:w-auto"
               >
                 Начать бесплатно
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
               </Button>
             </Link>
             <Button 
-              variant="outline" 
+              variant="secondary" 
               size="lg"
-              className="w-full sm:w-auto border-slate-600 text-slate-300 hover:bg-white/5 hover:text-white hover:border-slate-500 text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 h-auto"
+              className="w-full sm:w-auto"
             >
               <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               Смотреть демо
