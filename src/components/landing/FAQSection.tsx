@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Search } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
 
 const faqs = [
   {
@@ -34,6 +37,31 @@ const faqs = [
 ];
 
 export function FAQSection() {
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  const filteredFaqs = faqs.filter(
+    (faq) =>
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const highlightText = (text: string, query: string) => {
+    if (!query.trim()) return text;
+    
+    const regex = new RegExp(`(${query})`, "gi");
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <mark key={index} className="bg-indigo-500/30 text-white rounded px-0.5">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
     <section id="faq" className="py-24 relative bg-slate-900/50">
       <div className="container px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
@@ -56,23 +84,49 @@ export function FAQSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: 0.05 }}
+          className="mb-8"
+        >
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+            <Input
+              type="text"
+              placeholder="Поиск по вопросам..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 py-6 bg-slate-800/40 border-slate-700/40 rounded-xl text-white placeholder:text-gray-500 focus:border-indigo-500/50 focus:ring-indigo-500/20"
+            />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, index) => (
+          <Accordion type="single" collapsible className="space-y-4">
+            {filteredFaqs.map((faq, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="rounded-2xl px-6 bg-slate-800/30 border-none"
+                className="rounded-xl p-0 bg-slate-800/40 border border-slate-700/40 hover:border-slate-600 transition-colors duration-300 overflow-hidden"
               >
-                <AccordionTrigger className="text-left hover:no-underline py-6">
-                  <span className="font-semibold text-white text-base pr-4">{faq.question}</span>
+                <AccordionTrigger className="text-left hover:no-underline px-6 py-6 group cursor-pointer">
+                  <span className="font-semibold text-white text-lg pr-4 group-hover:text-indigo-400 transition-colors duration-300">
+                    {highlightText(faq.question, searchQuery)}
+                  </span>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-400 pb-6 text-base leading-relaxed">
-                  {faq.answer}
+                <AccordionContent className="text-gray-400 px-6 pb-6 pt-0 text-base leading-relaxed">
+                  {highlightText(faq.answer, searchQuery)}
                 </AccordionContent>
               </AccordionItem>
             ))}
+            {filteredFaqs.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                Ничего не найдено по запросу "{searchQuery}"
+              </div>
+            )}
           </Accordion>
         </motion.div>
       </div>
