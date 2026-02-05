@@ -34,7 +34,7 @@ const categories = [
 
 export function ModelsSection() {
   return (
-    <section id="models" className="py-24 relative bg-slate-900/50">
+    <section id="models" className="py-24 relative bg-slate-900/50" aria-labelledby="models-heading">
       <div className="container px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export function ModelsSection() {
           transition={{ duration: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-white mb-6">
+          <h2 id="models-heading" className="text-4xl font-bold text-white mb-6">
             Все типы AI-моделей
           </h2>
           <p className="text-gray-400 text-base max-w-2xl mx-auto">
@@ -51,7 +51,7 @@ export function ModelsSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
           {categories.map((category, index) => (
             <motion.div
               key={index}
@@ -60,15 +60,16 @@ export function ModelsSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.05 }}
               whileHover={{ y: -5 }}
-              className="group p-8 rounded-2xl bg-slate-800/40 border border-slate-700/40 hover:border-indigo-500/30 transition-all duration-300"
+              className="group p-8 rounded-2xl bg-slate-800/40 border border-slate-700/40 hover:border-indigo-500/30 transition-all duration-300 will-change-transform"
+              role="listitem"
             >
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mb-6">
-                <category.icon className="w-8 h-8 text-white" />
+                <category.icon className="w-8 h-8 text-white" aria-hidden="true" />
               </div>
               
               <h3 className="text-2xl font-bold text-white mb-4">{category.title}</h3>
               
-              <ul className="space-y-2 mb-4">
+              <ul className="space-y-2 mb-4" aria-label={`Модели для ${category.title}`}>
                 {category.models.map((model, modelIndex) => (
                   <li key={modelIndex} className="text-sm text-gray-400 leading-relaxed">
                     {model}
@@ -79,8 +80,9 @@ export function ModelsSection() {
               <a 
                 href="#" 
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors duration-300 mt-4"
+                aria-label={`Смотреть все ${category.total} моделей для ${category.title}`}
               >
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 Смотреть все ({category.total})
               </a>
             </motion.div>
