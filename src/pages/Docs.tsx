@@ -17,19 +17,18 @@ import {
 import { useState } from "react";
 
 const colorTokens = [
-  { name: "--background", value: "222 47% 6%", description: "Основной фон приложения" },
-  { name: "--foreground", value: "210 40% 98%", description: "Основной цвет текста" },
-  { name: "--primary", value: "217 91% 60%", description: "Основной акцентный цвет (синий)" },
-  { name: "--secondary", value: "250 80% 60%", description: "Вторичный акцент (фиолетовый)" },
-  { name: "--muted", value: "217 33% 17%", description: "Приглушенные поверхности" },
-  { name: "--muted-foreground", value: "215 20% 65%", description: "Приглушенный текст" },
-  { name: "--accent", value: "280 80% 60%", description: "Дополнительный акцент" },
-  { name: "--card", value: "222 47% 8%", description: "Фон карточек" },
-  { name: "--border", value: "217 33% 17%", description: "Цвет границ" },
-  { name: "--neon-blue", value: "217 91% 60%", description: "Неоновый синий" },
-  { name: "--neon-purple", value: "280 80% 60%", description: "Неоновый фиолетовый" },
-  { name: "--neon-cyan", value: "180 80% 50%", description: "Неоновый бирюзовый" },
-  { name: "--neon-pink", value: "330 80% 60%", description: "Неоновый розовый" },
+  { name: "--background", value: "0 0% 98%", description: "Основной фон приложения (#FAFAFA)" },
+  { name: "--foreground", value: "0 0% 10%", description: "Основной цвет текста (#1A1A1A)" },
+  { name: "--primary", value: "263 70% 50%", description: "Акцентный цвет (фиолетовый #8B5CF6)" },
+  { name: "--primary-foreground", value: "0 0% 100%", description: "Текст на primary (белый)" },
+  { name: "--secondary", value: "0 0% 96%", description: "Вторичный фон (#F4F4F5)" },
+  { name: "--muted", value: "0 0% 96%", description: "Приглушенные поверхности" },
+  { name: "--muted-foreground", value: "0 0% 45%", description: "Приглушенный текст (#737373)" },
+  { name: "--accent", value: "263 70% 50%", description: "Акцент (= primary)" },
+  { name: "--card", value: "0 0% 100%", description: "Фон карточек (белый)" },
+  { name: "--border", value: "0 0% 90%", description: "Цвет границ (#E5E5E5)" },
+  { name: "--ring", value: "263 70% 50%", description: "Цвет focus ring" },
+  { name: "--destructive", value: "0 84% 60%", description: "Деструктивные действия (красный)" },
 ];
 
 const buttonVariants = [
@@ -64,16 +63,16 @@ const typographyScale = [
 ];
 
 const gradients = [
-  { name: "Primary Gradient", class: "bg-gradient-to-r from-primary to-secondary", css: "linear-gradient(to right, hsl(217 91% 60%), hsl(250 80% 60%))" },
-  { name: "Hero Gradient", class: "bg-gradient-to-br from-primary/20 to-secondary/20", css: "linear-gradient(to bottom right, hsl(217 91% 60% / 0.2), hsl(250 80% 60% / 0.2))" },
-  { name: "Card Gradient", class: "bg-gradient-to-br from-card to-background", css: "linear-gradient(to bottom right, hsl(222 47% 8%), hsl(222 47% 6%))" },
-  { name: "Glow Effect", class: "bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,hsla(217,91%,60%,0.15),transparent)]", css: "radial-gradient(ellipse 80% 50% at 50% -20%, hsla(217,91%,60%,0.15), transparent)" },
+  { name: "Primary Subtle", class: "bg-gradient-to-r from-primary/5 to-primary/10", css: "linear-gradient(to right, hsl(263 70% 50% / 0.05), hsl(263 70% 50% / 0.1))" },
+  { name: "Card Hover", class: "bg-gradient-to-br from-card to-muted", css: "linear-gradient(to bottom right, #FFFFFF, #F4F4F5)" },
+  { name: "Hero Background", class: "bg-gradient-to-b from-background to-muted", css: "linear-gradient(to bottom, #FAFAFA, #F4F4F5)" },
 ];
 
 const shadows = [
-  { name: "Glow SM", class: "shadow-[0_0_20px_hsla(217,91%,60%,0.3)]", css: "0 0 20px hsla(217,91%,60%,0.3)" },
-  { name: "Glow MD", class: "shadow-[0_0_40px_hsla(217,91%,60%,0.4)]", css: "0 0 40px hsla(217,91%,60%,0.4)" },
-  { name: "Glow LG", class: "shadow-[0_0_60px_hsla(217,91%,60%,0.5)]", css: "0 0 60px hsla(217,91%,60%,0.5)" },
+  { name: "Card SM", class: "shadow-sm", css: "0 1px 2px rgba(0,0,0,0.05)" },
+  { name: "Card MD", class: "shadow-md", css: "0 4px 6px rgba(0,0,0,0.1)" },
+  { name: "Card LG", class: "shadow-lg", css: "0 10px 15px rgba(0,0,0,0.1)" },
+  { name: "Primary Ring", class: "ring-2 ring-primary ring-offset-2", css: "0 0 0 2px hsl(263 70% 50%)" },
 ];
 
 function ColorSwatch({ name, value, description }: { name: string; value: string; description: string }) {
@@ -146,11 +145,11 @@ export default function Docs() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">Design System</span>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            Design System
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Полная документация дизайн-системы AI Hub. Цвета, типографика, компоненты и анимации.
+            Светлый минималистичный дизайн AI Hub. Цвета, типографика, компоненты.
           </p>
         </motion.div>
 
@@ -195,10 +194,10 @@ export default function Docs() {
         {/* Shadows Section */}
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-accent" />
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary" />
             </div>
-            <h2 className="text-2xl font-bold">Glow-эффекты</h2>
+            <h2 className="text-2xl font-bold">Тени и эффекты</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {shadows.map((shadow) => (
@@ -214,8 +213,8 @@ export default function Docs() {
         {/* Typography Section */}
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-neon-cyan/10 flex items-center justify-center">
-              <Type className="w-5 h-5 text-neon-cyan" />
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Type className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-2xl font-bold">Типографика</h2>
           </div>
@@ -240,8 +239,8 @@ export default function Docs() {
         {/* Buttons Section */}
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-neon-pink/10 flex items-center justify-center">
-              <Square className="w-5 h-5 text-neon-pink" />
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Square className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-2xl font-bold">Кнопки</h2>
           </div>
@@ -278,28 +277,30 @@ export default function Docs() {
           
           <div className="space-y-6">
             <div className="p-6 rounded-xl bg-card border border-border">
-              <h3 className="font-semibold mb-4">Gradient Text</h3>
-              <span className="text-3xl font-bold gradient-text">Градиентный текст</span>
-              <pre className="mt-4 p-4 rounded-lg bg-background text-sm overflow-x-auto">
-                <code>{`<span className="gradient-text">Градиентный текст</span>`}</code>
+              <h3 className="font-semibold mb-4">Primary Button</h3>
+              <Button variant="default" size="lg">Начать бесплатно</Button>
+              <pre className="mt-4 p-4 rounded-lg bg-muted text-sm overflow-x-auto">
+                <code>{`<Button variant="default" size="lg">Начать бесплатно</Button>`}</code>
               </pre>
             </div>
 
             <div className="p-6 rounded-xl bg-card border border-border">
-              <h3 className="font-semibold mb-4">Glow Effect Card</h3>
-              <div className="w-48 h-32 rounded-xl bg-primary/10 border border-primary/30 glow-effect flex items-center justify-center">
-                <span className="text-primary font-medium">Hover me</span>
+              <h3 className="font-semibold mb-4">Card with Shadow</h3>
+              <div className="w-48 h-32 rounded-xl bg-card border border-border shadow-md flex items-center justify-center">
+                <span className="text-foreground font-medium">Card</span>
               </div>
-              <pre className="mt-4 p-4 rounded-lg bg-background text-sm overflow-x-auto">
-                <code>{`<div className="glow-effect">...</div>`}</code>
+              <pre className="mt-4 p-4 rounded-lg bg-muted text-sm overflow-x-auto">
+                <code>{`<div className="bg-card border border-border shadow-md">...</div>`}</code>
               </pre>
             </div>
 
             <div className="p-6 rounded-xl bg-card border border-border">
-              <h3 className="font-semibold mb-4">Neon Line Separator</h3>
-              <div className="neon-line w-full my-4" />
-              <pre className="mt-4 p-4 rounded-lg bg-background text-sm overflow-x-auto">
-                <code>{`<div className="neon-line" />`}</code>
+              <h3 className="font-semibold mb-4">Focus Ring</h3>
+              <Button variant="outline" className="focus-visible:ring-2 focus-visible:ring-primary">
+                Focus me
+              </Button>
+              <pre className="mt-4 p-4 rounded-lg bg-muted text-sm overflow-x-auto">
+                <code>{`<Button className="focus-visible:ring-2 focus-visible:ring-primary">...</Button>`}</code>
               </pre>
             </div>
           </div>
@@ -329,7 +330,7 @@ export default function Docs() {
       {/* Footer */}
       <footer className="border-t border-border py-8 mt-16">
         <div className="container px-4 md:px-6 text-center text-sm text-muted-foreground">
-          AI Hub Design System v1.0 • Обновлено: Февраль 2026
+          AI Hub Design System v2.0 (Light Theme) • Обновлено: Февраль 2026
         </div>
       </footer>
     </div>
