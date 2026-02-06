@@ -1,73 +1,162 @@
-# Welcome to your Lovable project
+# AI Hub (Prisma AI Cloud)
 
-## Project info
+Современный агрегатор AI-сервисов с поддержкой множества моделей для генерации текста, изображений, видео и аудио.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![AI Hub Preview](public/placeholder.svg)
 
-## How can I edit this code?
+## 🚀 Возможности
 
-There are several ways of editing your application.
+- **💬 Текстовые модели** — GPT-4, Claude, Gemini, Mistral и другие
+- **🎨 Генерация изображений** — Midjourney, DALL-E, Stable Diffusion
+- **🎬 Генерация видео** — Sora, Runway, Kling (в разработке)
+- **🎵 Генерация аудио** — ElevenLabs, Suno (в разработке)
+- **🎙️ Транскрипция голоса** — ElevenLabs Scribe v2
+- **📱 Адаптивный дизайн** — Работает на всех устройствах
 
-**Use Lovable**
+## 🛠️ Технологии
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Frontend
+- **React 18** + TypeScript
+- **Vite** — Сборка и dev-сервер
+- **Tailwind CSS** — Стилизация
+- **shadcn/ui** — UI-компоненты
+- **Framer Motion** — Анимации
+- **React Query** — Управление состоянием
+- **React Router DOM** — Роутинг
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend
+- **Внешний API** — Laravel/PHP (`https://api.siteaccess.ru/api`)
+- **Lovable Cloud** — Edge Functions, база данных
+- **ElevenLabs** — Транскрипция голоса (Scribe v2)
 
-**Use your preferred IDE**
+## 📦 Установка
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Требования
+- Node.js 18+ или Bun
+- npm или bun
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Локальная разработка
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Клонировать репозиторий
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Установить зависимости
+npm install
+# или
+bun install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Запустить dev-сервер
 npm run dev
+# или
+bun dev
 ```
 
-**Edit a file directly in GitHub**
+Приложение будет доступно по адресу `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## ⚙️ Переменные окружения
 
-**Use GitHub Codespaces**
+Создайте файл `.env` в корне проекта:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```env
+# Внешний API для авторизации и данных
+VITE_API_URL=https://api.siteaccess.ru/api
 
-## What technologies are used for this project?
+# Supabase (автоматически настраивается Lovable Cloud)
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+VITE_SUPABASE_PROJECT_ID=your-project-id
+```
 
-This project is built with:
+## 📁 Структура проекта
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+src/
+├── components/
+│   ├── admin/          # Компоненты админ-панели
+│   ├── chat/           # Компоненты чата
+│   ├── dashboard/      # Компоненты дашборда
+│   ├── image/          # Генерация изображений
+│   ├── landing/        # Лендинг страница
+│   └── ui/             # shadcn/ui компоненты
+├── hooks/              # React хуки
+├── integrations/       # Интеграции (Supabase)
+├── lib/                # Утилиты
+├── pages/              # Страницы приложения
+├── services/           # API сервисы
+└── test/               # Тесты
 
-## How can I deploy this project?
+supabase/
+└── functions/          # Edge Functions
+    ├── elevenlabs-scribe-token/
+    └── elevenlabs-transcribe/
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+public/                 # Статические файлы
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 📄 Страницы
 
-Yes, you can!
+| Путь | Описание | Доступ |
+|------|----------|--------|
+| `/` | Лендинг | Публичный |
+| `/login` | Вход | Публичный |
+| `/register` | Регистрация | Публичный |
+| `/forgot-password` | Восстановление пароля | Публичный |
+| `/dashboard` | Главная панель | Авторизованный |
+| `/dashboard/chat` | AI Чат | Авторизованный |
+| `/dashboard/image` | Генерация изображений | Авторизованный |
+| `/admin` | Админ-панель | Только root |
+| `/docs` | Документация дизайн-системы | Публичный |
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🎨 Дизайн-система
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Проект использует светлый минималистичный дизайн:
+
+- **Основной фон**: `#FAFAFA` (почти белый)
+- **Текст**: `#1A1A1A` (темно-серый)
+- **Акцент**: `#8B5CF6` (фиолетовый)
+
+Подробная документация доступна на странице `/docs`
+
+## 🚀 Деплой
+
+### Через Lovable
+1. Откройте проект в Lovable
+2. Нажмите **Share → Publish**
+3. Приложение будет доступно по адресу `*.lovable.app`
+
+### Кастомный домен
+1. Перейдите в **Project → Settings → Domains**
+2. Нажмите **Connect Domain**
+3. Следуйте инструкциям для настройки DNS
+
+## 📋 Roadmap
+
+См. [.lovable/plan.md](.lovable/plan.md) для полного плана развития.
+
+### Q1 2026 (Текущий)
+- ✅ Landing page (светлая тема)
+- ✅ Система авторизации
+- ✅ Dashboard с навигацией
+- ✅ Chat интерфейс
+- ✅ Image generation UI
+- ✅ Voice transcription
+- ⏳ Интеграция с внешним API
+- ⏳ Биллинг и платежи
+
+### Q2-Q4 2026
+- Реальные AI-модели
+- Видео генерация
+- Аудио генерация
+- API для разработчиков
+- Enterprise функции
+
+## 📝 Лицензия
+
+MIT License — используйте как хотите.
+
+## 🤝 Контакты
+
+- **Сайт**: [prisma-ai-cloud.lovable.app](https://prisma-ai-cloud.lovable.app)
+- **Email**: support@siteaccess.ru
