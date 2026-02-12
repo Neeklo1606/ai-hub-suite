@@ -122,13 +122,13 @@ export default function Chat() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center max-w-2xl w-full"
               >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_40px_hsla(217,91%,60%,0.3)]">
-                  <Sparkles className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <Sparkles className="w-6 h-6 text-primary" />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                <h1 className="text-xl sm:text-2xl font-medium text-foreground mb-2">
                   Чем могу помочь?
                 </h1>
-                <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
+                <p className="text-muted-foreground mb-6 sm:mb-8 text-sm">
                   Выберите модель и начните общение с AI
                 </p>
 
@@ -144,7 +144,7 @@ export default function Chat() {
                     >
                       <span className="text-xl sm:text-2xl">{prompt.icon}</span>
                       <div className="min-w-0">
-                        <p className="font-medium text-foreground group-hover:text-primary transition-colors text-sm sm:text-base">
+                        <p className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">
                           {prompt.title}
                         </p>
                         <p className="text-xs sm:text-sm text-muted-foreground truncate">
