@@ -20,10 +20,11 @@ interface ChatInputProps {
   onSelectModel?: (modelId: string) => void;
 }
 
-export function ChatInput({ onSend, isLoading, placeholder = "Введите сообщение...", selectedModel = "gpt-4.1", onSelectModel }: ChatInputProps) {
+export function ChatInput({ onSend, isLoading, placeholder = "Введите ваш юридический запрос или загрузите договор (PDF, DOCX)", selectedModel = "gpt-4.1", onSelectModel }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -119,6 +120,28 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
     if (fileInputRef.current) fileInputRef.current.value = "";
   }, []);
 
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      const allowed = ['.pdf', '.doc', '.docx'];
+      const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      if (allowed.includes(ext)) {
+        setAttachedFile({ name: file.name, size: formatFileSize(file.size), file });
+      }
+    }
+  }, []);
+
   const handleSubmit = () => {
     if (message.trim() && !isLoading) {
       onSend(message.trim());
@@ -156,8 +179,19 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
         <motion.div
           animate={controls}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="relative flex items-end gap-2 p-2 rounded-2xl border bg-card"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={cn(
+            "relative flex items-end gap-2 p-2 rounded-2xl border bg-card",
+            isDragging && "ring-2 ring-primary bg-primary/5"
+          )}
         >
+          {isDragging && (
+            <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-2xl z-20">
+              <div className="text-sm text-muted-foreground">Отпустите файл для загрузки</div>
+            </div>
+          )}
           {/* Left icons */}
           <div className="flex items-center gap-0.5 shrink-0">
             <input
