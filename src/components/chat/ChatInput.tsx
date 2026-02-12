@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, FileText, Mic, X, ArrowUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { FileText, Mic, X, ArrowUp, Globe, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, useAnimationControls } from "framer-motion";
 import { ModelSelector } from "@/components/chat/ModelSelector";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -20,9 +18,8 @@ interface ChatInputProps {
   onSelectModel?: (modelId: string) => void;
 }
 
-export function ChatInput({ onSend, isLoading, placeholder = "Введите ваш юридический запрос или загрузите договор (PDF, DOCX)", selectedModel = "gpt-4.1", onSelectModel }: ChatInputProps) {
+export function ChatInput({ onSend, isLoading, placeholder = "Спросите что угодно", selectedModel = "gpt-4.1", onSelectModel }: ChatInputProps) {
   const [message, setMessage] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
@@ -30,7 +27,6 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef<string>("");
-  const controls = useAnimationControls();
 
   // Auto-resize (max 5 lines ~120px)
   useEffect(() => {
@@ -39,15 +35,6 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
     }
   }, [message]);
-
-  // Focus animation
-  useEffect(() => {
-    controls.start(
-      isFocused
-        ? { boxShadow: "0 10px 25px -5px hsl(var(--primary) / 0.2)", borderColor: "hsl(var(--primary) / 0.5)" }
-        : { boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.05)", borderColor: "hsl(var(--border))" }
-    );
-  }, [isFocused, controls]);
 
   // Speech Recognition
   useEffect(() => {
@@ -102,6 +89,7 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
       setIsRecording(true);
     }
   };
+
   const formatFileSize = (bytes: number): string => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -159,8 +147,8 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
   };
 
   return (
-    <div className="border-t border-border bg-background/80 backdrop-blur-sm p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="bg-background/80 backdrop-blur-sm px-4 pb-4 pt-2">
+      <div className="max-w-3xl mx-auto">
         {/* Attached file preview */}
         {attachedFile && (
           <div className="flex items-center gap-2 px-3 py-2 mb-2 bg-card rounded-lg border border-border">
@@ -176,14 +164,12 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
           </div>
         )}
 
-        <motion.div
-          animate={controls}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+        <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={cn(
-            "relative flex items-end gap-2 p-2 rounded-2xl border bg-card",
+            "relative rounded-2xl border border-border bg-card transition-colors",
             isDragging && "ring-2 ring-primary bg-primary/5"
           )}
         >
@@ -192,76 +178,90 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите в�
               <div className="text-sm text-muted-foreground">Отпустите файл для загрузки</div>
             </div>
           )}
-          {/* Left icons */}
-          <div className="flex items-center gap-0.5 shrink-0">
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              onChange={handleFileChange}
-              accept=".pdf,.doc,.docx,.txt,.md,.csv,.xls,.xlsx"
-            />
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={handleFileSelect}
-                    className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors"
-                  >
-                    <FileText className="h-4 w-4 text-muted-foreground" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent><p>Прикрепить файл</p></TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
 
-            {onSelectModel && (
-              <ModelSelector
-                selectedModel={selectedModel}
-                onSelect={onSelectModel}
-                compact
-              />
-            )}
-
-          </div>
-
-          {/* Textarea */}
+          {/* Textarea row */}
           <textarea
             ref={textareaRef}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
             placeholder={placeholder}
             disabled={isLoading}
             rows={1}
-            className="flex-1 min-h-[40px] max-h-[120px] resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none py-2.5 px-1"
+            className="w-full min-h-[44px] max-h-[120px] resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none px-4 pt-3 pb-1"
           />
 
-          {/* Voice / Send toggle */}
-          {message.trim() ? (
-            <button
-              onClick={handleSubmit}
-              disabled={isLoading}
-              className="h-9 w-9 shrink-0 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all disabled:opacity-50"
-            >
-              <ArrowUp className="h-4 w-4" />
-            </button>
-          ) : (
-            <button
-              onClick={handleToggleRecording}
-              disabled={isLoading}
-              className={cn(
-                "h-9 w-9 shrink-0 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-all",
-                isRecording && "border-destructive bg-destructive/10 animate-pulse"
+          {/* Bottom toolbar */}
+          <div className="flex items-center justify-between px-2 pb-2">
+            {/* Left actions */}
+            <div className="flex items-center gap-1">
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                onChange={handleFileChange}
+                accept=".pdf,.doc,.docx,.txt,.md,.csv,.xls,.xlsx"
+              />
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={handleFileSelect}
+                      className="h-8 w-8 rounded-lg hover:bg-muted flex items-center justify-center transition-colors"
+                    >
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Прикрепить файл</p></TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="h-8 flex items-center gap-1.5 px-2.5 rounded-lg border border-border hover:bg-muted transition-colors">
+                      <Globe className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">Web search</span>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Поиск в интернете</p></TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {onSelectModel && (
+                <ModelSelector
+                  selectedModel={selectedModel}
+                  onSelect={onSelectModel}
+                  compact
+                />
               )}
-              title={isRecording ? "Остановить запись" : "Голосовой ввод"}
-            >
-              <Mic className={cn("h-4 w-4", isRecording ? "text-destructive" : "text-muted-foreground")} />
-            </button>
-          )}
-        </motion.div>
+            </div>
+
+            {/* Right: Mic / Send */}
+            {message.trim() ? (
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className="h-9 w-9 shrink-0 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-colors disabled:opacity-50"
+              >
+                <ArrowUp className="h-4 w-4" />
+              </button>
+            ) : (
+              <button
+                onClick={handleToggleRecording}
+                disabled={isLoading}
+                className={cn(
+                  "h-9 w-9 shrink-0 rounded-full bg-foreground text-background flex items-center justify-center transition-colors",
+                  isRecording && "bg-destructive text-destructive-foreground animate-pulse"
+                )}
+                title={isRecording ? "Остановить запись" : "Голосовой ввод"}
+              >
+                <Mic className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
 
         <p className="text-xs text-muted-foreground text-center mt-2">
           AI может ошибаться. Проверяйте важную информацию.
