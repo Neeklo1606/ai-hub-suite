@@ -38,21 +38,19 @@ export function ChatMessage({ message }: ChatMessageProps) {
       <div
         className={cn(
           "w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1",
-          isUser
-            ? "bg-primary/15 text-primary"
-            : "bg-gradient-to-br from-primary to-secondary text-white"
+          isUser ? "bg-card border border-border" : "bg-muted"
         )}
       >
-        {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+        {isUser ? <User className="w-4 h-4 text-muted-foreground" /> : <Bot className="w-4 h-4 text-muted-foreground" />}
       </div>
 
       {/* Bubble */}
       <div
         className={cn(
-          "group max-w-[75%] rounded-2xl px-4 py-3 shadow-sm",
+          "group max-w-[75%] rounded-2xl px-4 py-3",
           isUser
-            ? "bg-primary/10"
-            : "bg-card border border-border"
+            ? "bg-muted border-r-2 border-accent"
+            : "bg-card border border-border border-l-2 border-l-foreground"
         )}
       >
         {!isUser && model && (
