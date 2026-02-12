@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Check, ChevronDown, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -82,39 +80,26 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Card className="p-3 cursor-pointer hover:border-primary/30 transition-colors">
-          <div className="flex items-center gap-3">
-            <div
-              className={cn(
-                "w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0",
-                currentModel.color
-              )}
-            >
-              {currentModel.letter}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold truncate">{currentModel.name}</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-green-500/10 text-green-600 font-medium">
-                  Активна
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground">{currentModel.price}</p>
-            </div>
-            <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary">
-              Сменить модель
-              <ChevronDown className="w-3.5 h-3.5 ml-1" />
-            </Button>
+        <button className="flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer">
+          <div
+            className={cn(
+              "w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0",
+              currentModel.color
+            )}
+          >
+            {currentModel.letter}
           </div>
-        </Card>
+          <span className="text-sm font-medium text-foreground">{currentModel.name}</span>
+          <span className="text-xs text-muted-foreground">{currentModel.price}</span>
+          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+        </button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md p-0 gap-0">
+      <DialogContent className="sm:max-w-md p-0 gap-0 bg-popover">
         <DialogHeader className="p-4 pb-0">
           <DialogTitle className="text-lg">Выберите модель</DialogTitle>
         </DialogHeader>
 
-        {/* Search */}
         <div className="px-4 py-3 border-b border-border">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -123,12 +108,11 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
               placeholder="Поиск моделей..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-lg bg-muted/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30"
             />
           </div>
         </div>
 
-        {/* Models list */}
         <div className="p-2 max-h-[360px] overflow-y-auto">
           {filtered.map((model) => {
             const isActive = selectedModel === model.id;
@@ -141,9 +125,7 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
                 }}
                 className={cn(
                   "w-full flex items-center gap-3 p-3 rounded-xl transition-colors text-left",
-                  isActive
-                    ? "bg-primary/5"
-                    : "hover:bg-muted/50"
+                  isActive ? "bg-muted" : "hover:bg-muted/50"
                 )}
               >
                 <div
@@ -156,7 +138,7 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold">{model.name}</span>
+                    <span className="text-sm font-semibold text-foreground">{model.name}</span>
                     {model.badge && (
                       <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-primary/10 text-primary">
                         {model.badge}
