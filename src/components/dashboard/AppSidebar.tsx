@@ -120,11 +120,10 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
           className={cn("flex items-center gap-2", collapsed ? "justify-center w-full" : "")}
           onClick={onNavigate}
         >
-          <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-            <FileSearch className="w-4 h-4 text-foreground" />
-          </div>
-          {!collapsed && (
-            <span className="text-sm font-semibold text-sidebar-foreground">LegalAI</span>
+          {!collapsed ? (
+            <span className="text-lg font-semibold text-sidebar-foreground">Aura</span>
+          ) : (
+            <span className="text-lg font-semibold text-sidebar-foreground">A</span>
           )}
         </Link>
         {!collapsed && (

@@ -115,10 +115,7 @@ export default function Docs() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <Link to="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">AI Hub</span>
+                <span className="text-xl font-bold">Aura</span>
               </Link>
               <span className="text-muted-foreground">/</span>
               <span className="font-medium">Документация стилей</span>
@@ -149,7 +146,7 @@ export default function Docs() {
             Design System
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Светлый минималистичный дизайн AI Hub. Цвета, типографика, компоненты.
+            Светлый минималистичный дизайн Aura. Цвета, типографика, компоненты.
           </p>
         </motion.div>
 
@@ -229,7 +226,7 @@ export default function Docs() {
                   <span className="text-xs text-muted-foreground block">{item.size}</span>
                 </div>
                 <span className={`${item.class} ${item.weight}`}>
-                  AI Hub Platform
+                  Aura Platform
                 </span>
               </div>
             ))}
@@ -330,7 +327,7 @@ export default function Docs() {
       {/* Footer */}
       <footer className="border-t border-border py-8 mt-16">
         <div className="container px-4 md:px-6 text-center text-sm text-muted-foreground">
-          AI Hub Design System v2.0 (Light Theme) • Обновлено: Февраль 2026
+          Aura Design System v2.0 (Light Theme) • Обновлено: Февраль 2026
         </div>
       </footer>
     </div>
