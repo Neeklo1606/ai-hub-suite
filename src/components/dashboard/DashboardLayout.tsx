@@ -2,7 +2,7 @@ import { ReactNode, useState, useEffect } from "react";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronRight } from "lucide-react";
+import { Menu, ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
@@ -66,22 +66,39 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           marginLeft: sidebarCollapsed ? '70px' : '280px',
         }}
       >
-        {/* Expand button when collapsed */}
-        {sidebarCollapsed && (
-          <div className="fixed top-4 left-[85px] z-30 lg:block hidden">
+        {/* Header with balance pill */}
+        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-sm border-b border-border lg:justify-end">
+          {/* Expand button when collapsed (desktop) */}
+          {sidebarCollapsed && (
+            <div className="hidden lg:block">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 border border-border shadow-sm"
+                onClick={() => {
+                  setSidebarCollapsed(false);
+                  localStorage.setItem('sidebar-collapsed', 'false');
+                }}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+
+          {/* Balance pill — hidden on mobile */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+            <span className="text-sm">💰</span>
+            <span className="text-sm font-semibold text-foreground">1 255 ₽</span>
             <Button
-              variant="ghost"
+              variant="default"
               size="icon"
-              className="h-8 w-8 bg-background/80 backdrop-blur-sm border border-border shadow-sm"
-              onClick={() => {
-                setSidebarCollapsed(false);
-                localStorage.setItem('sidebar-collapsed', 'false');
-              }}
+              className="h-6 w-6 rounded-full p-0 ml-1"
             >
-              <ChevronRight className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
             </Button>
           </div>
-        )}
+        </header>
+
         {children}
       </main>
     </div>
