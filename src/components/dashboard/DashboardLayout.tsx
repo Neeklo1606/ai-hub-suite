@@ -56,6 +56,19 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         </SheetContent>
       </Sheet>
 
+      {/* Fixed expand button when sidebar is collapsed (desktop) */}
+      {sidebarCollapsed && (
+        <button
+          onClick={() => {
+            setSidebarCollapsed(false);
+            localStorage.setItem('sidebar-collapsed', 'false');
+          }}
+          className="hidden lg:flex fixed left-0 top-1/2 -translate-y-1/2 z-50 w-8 h-12 items-center justify-center bg-card border-r border-t border-b border-border rounded-r-lg hover:bg-muted transition-colors"
+        >
+          <ChevronRight className="w-4 h-4 text-muted-foreground" />
+        </button>
+      )}
+
       {/* Main Content */}
       <main
         className={cn(
@@ -67,23 +80,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         }}
       >
         {/* Header with balance pill */}
-        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-background/80 backdrop-blur-sm border-b border-border lg:justify-end">
-          {/* Expand button when collapsed (desktop) */}
-          {sidebarCollapsed && (
-            <div className="hidden lg:block">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 border border-border shadow-sm"
-                onClick={() => {
-                  setSidebarCollapsed(false);
-                  localStorage.setItem('sidebar-collapsed', 'false');
-                }}
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            </div>
-          )}
+        <header className="sticky top-0 z-30 flex items-center justify-end px-4 py-3 bg-background/80 backdrop-blur-sm border-b border-border">
 
           {/* Balance pill — hidden on mobile */}
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
