@@ -1,4 +1,4 @@
-import api from '@/lib/axios';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface RegisterData {
   name: string;
@@ -17,61 +17,66 @@ export interface ForgotPasswordData {
 }
 
 export interface ResetPasswordData {
-  email: string;
-  token: string;
   password: string;
   password_confirmation: string;
 }
 
-export interface AuthResponse {
-  message: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    role?: string;
-  };
-  token: string;
-}
-
 export const authService = {
-  async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/register', data);
-    if (response.data.token) {
-      localStorage.setItem('auth_token', response.data.token);
-    }
-    return response.data;
+  async register(data: RegisterData) {
+    const { data: authData, error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: { name: data.name },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    if (error) throw error;
+    return { user: authData.user, session: authData.session };
   },
 
-  async login(data: LoginData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/login', data);
-    if (response.data.token) {
-      localStorage.setItem('auth_token', response.data.token);
-    }
-    return response.data;
+  async login(data: LoginData) {
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) throw error;
+    return { user: authData.user, session: authData.session };
   },
 
-  async logout(): Promise<void> {
-    await api.post('/logout');
-    localStorage.removeItem('auth_token');
+  async logout() {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   },
 
   async getUser() {
-    const response = await api.get('/user');
-    return response.data.user;
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error) throw error;
+    return user;
   },
 
-  async forgotPassword(data: ForgotPasswordData): Promise<{ message: string }> {
-    const response = await api.post('/forgot-password', data);
-    return response.data;
+  async getSession() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) throw error;
+    return session;
   },
 
-  async resetPassword(data: ResetPasswordData): Promise<{ message: string }> {
-    const response = await api.post('/reset-password', data);
-    return response.data;
+  async forgotPassword(data: ForgotPasswordData) {
+    const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw error;
+  },
+
+  async resetPassword(data: ResetPasswordData) {
+    const { error } = await supabase.auth.updateUser({
+      password: data.password,
+    });
+    if (error) throw error;
   },
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('auth_token');
+    // This is a sync check; for reliable check use getSession()
+    return false; // Will be replaced by onAuthStateChange listener
   },
 };

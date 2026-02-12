@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { authService } from "@/services/authService";
+import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -11,24 +11,25 @@ export function AdminProtectedRoute({ children }: AdminProtectedRouteProps) {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      if (authService.isAuthenticated()) {
-        try {
-          const user = await authService.getUser();
-          if (user.role === 'root') {
-            setIsAuthorized(true);
-          } else {
-            setIsAuthorized(false);
-          }
-        } catch (error) {
-          setIsAuthorized(false);
-        }
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        const role = session.user.user_metadata?.role;
+        setIsAuthorized(role === 'root');
       } else {
         setIsAuthorized(false);
       }
-    };
+    });
 
-    checkAuth();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const role = session.user.user_metadata?.role;
+        setIsAuthorized(role === 'root');
+      } else {
+        setIsAuthorized(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   if (isAuthorized === null) {

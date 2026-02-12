@@ -22,16 +22,16 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await authService.login(formData);
+      const result = await authService.login(formData);
       toast({
         title: "Успешный вход",
-        description: `Добро пожаловать, ${response.user.name}!`,
+        description: `Добро пожаловать!`,
       });
       navigate("/dashboard");
     } catch (error: any) {
       toast({
         title: "Ошибка входа",
-        description: error.response?.data?.message || "Неверный email или пароль",
+        description: error.message || "Неверный email или пароль",
         variant: "destructive",
       });
     } finally {
