@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Check, ChevronDown, Search } from "lucide-react";
+import { Check, ChevronDown, Search, Sparkles } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -56,9 +57,10 @@ const models: Model[] = [
 interface ModelSelectorProps {
   selectedModel: string;
   onSelect: (modelId: string) => void;
+  compact?: boolean;
 }
 
-export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
+export function ModelSelector({ selectedModel, onSelect, compact }: ModelSelectorProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const currentModel = models.find((m) => m.id === selectedModel) || models[0];
@@ -72,14 +74,27 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button className="flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer">
-          <div className="w-6 h-6 rounded bg-muted flex items-center justify-center text-muted-foreground font-bold text-[10px] shrink-0">
-            {currentModel.letter}
-          </div>
-          <span className="text-sm font-medium text-foreground">{currentModel.name}</span>
-          <span className="text-xs text-muted-foreground">{currentModel.price}</span>
-          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-        </button>
+        {compact ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors">
+                  <Sparkles className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent><p>Выбрать модель</p></TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <button className="flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer">
+            <div className="w-6 h-6 rounded bg-muted flex items-center justify-center text-muted-foreground font-bold text-[10px] shrink-0">
+              {currentModel.letter}
+            </div>
+            <span className="text-sm font-medium text-foreground">{currentModel.name}</span>
+            <span className="text-xs text-muted-foreground">{currentModel.price}</span>
+            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+          </button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md p-0 gap-0 bg-card border-border">
