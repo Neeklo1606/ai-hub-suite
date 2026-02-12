@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, FileText, Mic, X, Sparkles } from "lucide-react";
+import { Send, FileText, Mic, X, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, useAnimationControls } from "framer-motion";
@@ -189,19 +189,6 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
               />
             )}
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleToggleRecording}
-              disabled={isLoading}
-              className={cn(
-                "h-9 w-9 text-muted-foreground hover:text-foreground transition-all",
-                isRecording && "text-destructive hover:text-destructive animate-pulse"
-              )}
-              title={isRecording ? "Остановить запись" : "Голосовой ввод"}
-            >
-              <Mic className="w-5 h-5" />
-            </Button>
           </div>
 
           {/* Textarea */}
@@ -218,20 +205,28 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
             className="flex-1 min-h-[40px] max-h-[120px] resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none py-2.5 px-1"
           />
 
-          {/* Send button */}
-          <Button
-            onClick={handleSubmit}
-            disabled={!message.trim() || isLoading}
-            size="icon"
-            className={cn(
-              "h-9 w-9 shrink-0 rounded-full transition-all",
-              message.trim()
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground"
-            )}
-          >
-            <Send className="w-4 h-4" />
-          </Button>
+          {/* Voice / Send toggle */}
+          {message.trim() ? (
+            <button
+              onClick={handleSubmit}
+              disabled={isLoading}
+              className="h-9 w-9 shrink-0 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center transition-all disabled:opacity-50"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          ) : (
+            <button
+              onClick={handleToggleRecording}
+              disabled={isLoading}
+              className={cn(
+                "h-9 w-9 shrink-0 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-all",
+                isRecording && "border-destructive bg-destructive/10 animate-pulse"
+              )}
+              title={isRecording ? "Остановить запись" : "Голосовой ввод"}
+            >
+              <Mic className={cn("h-4 w-4", isRecording ? "text-destructive" : "text-muted-foreground")} />
+            </button>
+          )}
         </motion.div>
 
         <p className="text-xs text-muted-foreground text-center mt-2">
