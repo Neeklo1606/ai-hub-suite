@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { ChatMessage } from "@/components/chat/ChatMessage";
 import { ChatInput } from "@/components/chat/ChatInput";
-import { ModelSelector } from "@/components/chat/ModelSelector";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, History, MessageSquare, Trash2 } from "lucide-react";
@@ -89,14 +88,11 @@ export default function Chat() {
       <div className="h-screen flex flex-col">
         {/* Header */}
         <header className="border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-3 pt-14 lg:pt-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <ModelSelector selectedModel={selectedModel} onSelect={setSelectedModel} />
-              <Button variant="ghost" size="sm" className="gap-2 hidden sm:flex">
-                <Plus className="w-4 h-4" />
-                Новый чат
-              </Button>
-            </div>
+          <div className="flex items-center justify-between">
+            <Button variant="ghost" size="sm" className="gap-2">
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">Новый чат</span>
+            </Button>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" className="gap-2">
                 <History className="w-4 h-4" />
@@ -189,7 +185,7 @@ export default function Chat() {
         </div>
 
         {/* Input */}
-        <ChatInput onSend={handleSend} isLoading={isLoading} />
+        <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
       </div>
     </DashboardLayout>
   );

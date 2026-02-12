@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, FileText, Mic, X } from "lucide-react";
+import { Send, FileText, Mic, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, useAnimationControls } from "framer-motion";
+import { ModelSelector } from "@/components/chat/ModelSelector";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AttachedFile {
   name: string;
@@ -14,9 +16,11 @@ interface ChatInputProps {
   onSend: (message: string) => void;
   isLoading?: boolean;
   placeholder?: string;
+  selectedModel?: string;
+  onSelectModel?: (modelId: string) => void;
 }
 
-export function ChatInput({ onSend, isLoading, placeholder = "Введите сообщение..." }: ChatInputProps) {
+export function ChatInput({ onSend, isLoading, placeholder = "Введите сообщение...", selectedModel = "gpt-4.1", onSelectModel }: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -163,12 +167,28 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
               onChange={handleFileChange}
               accept=".pdf,.doc,.docx,.txt,.md,.csv,.xls,.xlsx"
             />
-            <button
-              onClick={handleFileSelect}
-              className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors"
-            >
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleFileSelect}
+                    className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors"
+                  >
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent><p>Прикрепить файл</p></TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {onSelectModel && (
+              <ModelSelector
+                selectedModel={selectedModel}
+                onSelect={onSelectModel}
+                compact
+              />
+            )}
+
             <Button
               variant="ghost"
               size="icon"
