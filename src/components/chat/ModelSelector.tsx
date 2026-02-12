@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { Zap, Brain, GraduationCap, Search, Sparkles, Check } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -20,9 +18,16 @@ interface Scenario {
 
 const scenarios: Scenario[] = [
   {
+    id: "smart",
+    title: "Умный",
+    description: "Думает глубоко или быстро в зависимости от задачи",
+    icon: Sparkles,
+    model: "gpt-4.1",
+  },
+  {
     id: "quick",
     title: "Быстрый ответ",
-    description: "Для повседневных запросов и простых задач",
+    description: "Для повседневных запросов",
     icon: Zap,
     model: "gpt-4.1-mini",
   },
@@ -36,9 +41,9 @@ const scenarios: Scenario[] = [
   {
     id: "learning",
     title: "Обучение",
-    description: "Объяснения, примеры, пошаговые инструкции",
+    description: "Объяснения, примеры, инструкции",
     icon: GraduationCap,
-    model: "gpt-4.1",
+    model: "gemini-2.5",
   },
   {
     id: "search",
@@ -60,17 +65,17 @@ export function ModelSelector({ selectedModel, onSelect, compact }: ModelSelecto
   const currentScenario = scenarios.find((s) => s.model === selectedModel) || scenarios[0];
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
         {compact ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors">
-                  <Sparkles className="h-4 w-4 text-muted-foreground" />
+                  <currentScenario.icon className="h-4 w-4 text-muted-foreground" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent><p>Выбрать сценарий</p></TooltipContent>
+              <TooltipContent><p>{currentScenario.title}</p></TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : (
@@ -79,14 +84,15 @@ export function ModelSelector({ selectedModel, onSelect, compact }: ModelSelecto
             <span className="text-sm font-medium text-foreground">{currentScenario.title}</span>
           </button>
         )}
-      </DialogTrigger>
+      </PopoverTrigger>
 
-      <DialogContent className="sm:max-w-md p-0 gap-0 bg-card border-border">
-        <DialogHeader className="p-4 pb-3">
-          <DialogTitle className="text-lg text-foreground">Выберите сценарий</DialogTitle>
-        </DialogHeader>
-
-        <div className="p-4 pt-0 grid grid-cols-2 gap-2">
+      <PopoverContent
+        align="start"
+        side="top"
+        sideOffset={8}
+        className="w-72 p-1 bg-card border-border rounded-xl shadow-lg"
+      >
+        <div className="space-y-0.5">
           {scenarios.map((scenario) => {
             const isActive = selectedModel === scenario.model;
             return (
@@ -97,25 +103,26 @@ export function ModelSelector({ selectedModel, onSelect, compact }: ModelSelecto
                   setOpen(false);
                 }}
                 className={cn(
-                  "flex items-start gap-3 p-3 rounded-xl transition-colors text-left",
-                  isActive
-                    ? "border border-primary bg-primary/5"
-                    : "border border-border hover:bg-muted"
+                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left",
+                  isActive ? "bg-muted" : "hover:bg-muted/50"
                 )}
               >
                 <scenario.icon className={cn(
-                  "w-5 h-5 shrink-0 mt-0.5",
-                  isActive ? "text-primary" : "text-muted-foreground"
+                  "w-5 h-5 shrink-0",
+                  isActive ? "text-foreground" : "text-muted-foreground"
                 )} />
-                <div className="min-w-0">
+                <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-foreground">{scenario.title}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{scenario.description}</div>
+                  <div className="text-xs text-muted-foreground">{scenario.description}</div>
                 </div>
+                {isActive && (
+                  <Check className="w-4 h-4 text-foreground shrink-0" />
+                )}
               </button>
             );
           })}
         </div>
-      </DialogContent>
-    </Dialog>
+      </PopoverContent>
+    </Popover>
   );
 }
