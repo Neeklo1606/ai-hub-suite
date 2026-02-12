@@ -171,6 +171,24 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
         })}
       </nav>
 
+      {/* Balance */}
+      {!collapsed && (
+        <div className="px-3 py-4 border-t border-sidebar-border">
+          <div className="bg-card border border-primary/20 rounded-lg p-3">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-muted-foreground">Баланс</span>
+              <span className="text-lg font-semibold text-foreground">1 255₽</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted-foreground">Pro Plan</span>
+              <button className="text-xs text-primary hover:text-primary/80 transition-colors">
+                Пополнить
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* User Menu */}
       <div className="p-2 border-t border-sidebar-border shrink-0">
         <DropdownMenu>

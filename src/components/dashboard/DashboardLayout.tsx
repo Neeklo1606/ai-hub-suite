@@ -2,7 +2,7 @@ import { ReactNode, useState, useEffect } from "react";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, ChevronRight, Plus } from "lucide-react";
+import { Menu, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
@@ -81,19 +81,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         {/* Header with balance pill */}
         <header className="sticky top-0 z-30 flex items-center justify-end px-4 py-3 bg-background/80 backdrop-blur-sm border-b border-border">
-
-          {/* Balance pill — hidden on mobile */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
-            <span className="text-sm">💰</span>
-            <span className="text-sm font-semibold text-foreground">1 255 ₽</span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 rounded-full p-0 ml-1 bg-muted hover:bg-accent text-muted-foreground hover:text-accent-foreground"
-            >
-              <Plus className="w-3.5 h-3.5" />
-            </Button>
-          </div>
         </header>
 
         {children}
