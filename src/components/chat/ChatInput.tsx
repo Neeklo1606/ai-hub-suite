@@ -1,8 +1,14 @@
-import { useState, useRef, useEffect } from "react";
-import { Send, Paperclip, Mic } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Send, FileText, Mic, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, useAnimationControls } from "framer-motion";
+
+interface AttachedFile {
+  name: string;
+  size: string;
+  file: File;
+}
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -14,7 +20,9 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
   const [message, setMessage] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
   const finalTranscriptRef = useRef<string>("");
   const controls = useAnimationControls();
@@ -89,11 +97,29 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
       setIsRecording(true);
     }
   };
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const handleFileSelect = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAttachedFile({ name: file.name, size: formatFileSize(file.size), file });
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }, []);
 
   const handleSubmit = () => {
     if (message.trim() && !isLoading) {
       onSend(message.trim());
       setMessage("");
+      setAttachedFile(null);
       if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
   };
@@ -108,6 +134,21 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
   return (
     <div className="border-t border-border bg-background/80 backdrop-blur-sm p-4">
       <div className="max-w-4xl mx-auto">
+        {/* Attached file preview */}
+        {attachedFile && (
+          <div className="flex items-center gap-2 px-3 py-2 mb-2 bg-card rounded-lg border border-border">
+            <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+            <span className="text-sm text-foreground truncate">{attachedFile.name}</span>
+            <span className="text-xs text-muted-foreground shrink-0">{attachedFile.size}</span>
+            <button
+              onClick={() => setAttachedFile(null)}
+              className="ml-auto text-muted-foreground hover:text-foreground transition-colors shrink-0"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        )}
+
         <motion.div
           animate={controls}
           transition={{ duration: 0.25, ease: "easeOut" }}
@@ -115,13 +156,19 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
         >
           {/* Left icons */}
           <div className="flex items-center gap-0.5 shrink-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 text-muted-foreground hover:text-foreground"
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              onChange={handleFileChange}
+              accept=".pdf,.doc,.docx,.txt,.md,.csv,.xls,.xlsx"
+            />
+            <button
+              onClick={handleFileSelect}
+              className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors"
             >
-              <Paperclip className="w-5 h-5" />
-            </Button>
+              <FileText className="h-4 w-4 text-muted-foreground" />
+            </button>
             <Button
               variant="ghost"
               size="icon"
@@ -159,7 +206,7 @@ export function ChatInput({ onSend, isLoading, placeholder = "Введите с�
             className={cn(
               "h-9 w-9 shrink-0 rounded-full transition-all",
               message.trim()
-                ? "bg-gradient-to-r from-primary to-accent text-white shadow-md"
+                ? "bg-primary text-primary-foreground"
                 : "bg-muted text-muted-foreground"
             )}
           >
