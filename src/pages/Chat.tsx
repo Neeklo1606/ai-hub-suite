@@ -18,10 +18,10 @@ interface Message {
 }
 
 const welcomePrompts = [
-  { icon: "✍️", title: "Напиши статью", description: "про искусственный интеллект" },
-  { icon: "💻", title: "Помоги с кодом", description: "на Python или JavaScript" },
-  { icon: "🎨", title: "Придумай идею", description: "для стартапа или проекта" },
-  { icon: "📊", title: "Проанализируй", description: "данные или текст" },
+  { title: "Анализ договора", description: "Проверить условия и риски" },
+  { title: "Составить документ", description: "Иск, жалоба, заявление" },
+  { title: "Юридическая консультация", description: "Ответы на правовые вопросы" },
+  { title: "Анализ судебной практики", description: "Поиск релевантных решений" },
 ];
 
 export default function Chat() {
@@ -122,34 +122,28 @@ export default function Chat() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center max-w-2xl w-full"
               >
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <h1 className="text-xl sm:text-2xl font-medium text-foreground mb-2">
+                <h1 className="text-xl sm:text-2xl font-medium text-foreground mb-1">
                   Чем могу помочь?
                 </h1>
-                <p className="text-muted-foreground mb-6 sm:mb-8 text-sm">
-                  Выберите модель и начните общение с AI
+                <p className="text-sm text-muted-foreground mb-6">
+                  Выберите задачу
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   {welcomePrompts.map((prompt, index) => (
                     <motion.button
                       key={index}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                       onClick={() => handlePromptClick(prompt)}
-                      className="flex items-start gap-3 p-3 sm:p-4 rounded-xl border border-border bg-muted/30 hover:bg-muted/50 hover:border-primary/30 transition-all text-left group"
+                      className="px-4 py-3 bg-card hover:bg-muted rounded-lg border border-border text-left transition-colors"
                     >
-                      <span className="text-xl sm:text-2xl">{prompt.icon}</span>
-                      <div className="min-w-0">
-                        <p className="font-medium text-foreground group-hover:text-primary transition-colors text-sm">
-                          {prompt.title}
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                          {prompt.description}
-                        </p>
+                      <div className="text-sm font-medium text-foreground">
+                        {prompt.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {prompt.description}
                       </div>
                     </motion.button>
                   ))}
