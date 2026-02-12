@@ -3,7 +3,6 @@ import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { ChatMessage } from "@/components/chat/ChatMessage";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, History, MessageSquare, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -92,9 +91,9 @@ export default function Chat() {
 
   return (
     <DashboardLayout>
-      <div className="h-screen flex flex-col">
-        {/* Header */}
-        <header className="border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-3 pt-14 lg:pt-3">
+      <div className="flex-1 flex flex-col min-h-0">
+        {/* Header - fixed height */}
+        <header className="shrink-0 border-b border-border bg-background/80 backdrop-blur-sm px-4 sm:px-6 py-3 pt-14 lg:pt-3">
           <div className="flex items-center justify-between">
             <Button variant="ghost" size="sm" className="gap-2">
               <Plus className="w-4 h-4" />
@@ -115,8 +114,8 @@ export default function Chat() {
           </div>
         </header>
 
-        {/* Chat Area */}
-        <div className="flex-1 overflow-hidden">
+        {/* Messages area - scrollable */}
+        <div className="flex-1 min-h-0 overflow-y-auto" ref={scrollRef}>
           {messages.length === 0 ? (
             // Welcome Screen
             <div className="h-full flex flex-col items-center justify-center p-4 sm:p-6">
@@ -135,7 +134,6 @@ export default function Chat() {
 
               {/* Scrolling prompt ribbons */}
               <div className="w-full overflow-hidden space-y-3 max-w-3xl">
-                {/* Top ribbon - scrolls left */}
                 <div className="relative overflow-hidden">
                   <div className="flex gap-2 animate-scroll-left w-max">
                     {[...topPrompts, ...topPrompts].map((text, i) => (
@@ -149,8 +147,6 @@ export default function Chat() {
                     ))}
                   </div>
                 </div>
-
-                {/* Bottom ribbon - scrolls right */}
                 <div className="relative overflow-hidden">
                   <div className="flex gap-2 animate-scroll-right w-max">
                     {[...bottomPrompts, ...bottomPrompts].map((text, i) => (
@@ -167,45 +163,44 @@ export default function Chat() {
               </div>
             </div>
           ) : (
-            // Messages
-            <ScrollArea ref={scrollRef} className="h-full">
-              <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
-                <AnimatePresence>
-                  {messages.map((message) => (
-                    <motion.div
-                      key={message.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                    >
-                      <ChatMessage message={message} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-
-                {isLoading && (
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <AnimatePresence>
+                {messages.map((message) => (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex items-center gap-3 p-4"
+                    key={message.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
                   >
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <MessageSquare className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
+                    <ChatMessage message={message} />
                   </motion.div>
-                )}
-              </div>
-            </ScrollArea>
+                ))}
+              </AnimatePresence>
+
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center gap-3 p-4"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 rounded-full bg-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-2 h-2 rounded-full bg-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </div>
+                </motion.div>
+              )}
+            </div>
           )}
         </div>
 
-        {/* Input */}
-        <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
+        {/* Input - fixed at bottom */}
+        <div className="shrink-0">
+          <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
+        </div>
       </div>
     </DashboardLayout>
   );
