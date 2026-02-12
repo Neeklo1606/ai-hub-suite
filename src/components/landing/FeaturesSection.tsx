@@ -11,14 +11,14 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-white">
+    <section id="features" className="py-24 bg-background">
       <div className="container px-4 max-w-4xl mx-auto">
         
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold text-[#1A1A1A] mb-12 text-center"
+          className="text-3xl font-bold text-foreground mb-12 text-center"
         >
           Преимущества
         </motion.h2>
@@ -31,10 +31,10 @@ export function FeaturesSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="p-6 rounded-2xl bg-[#FAFAFA] border border-[#E5E5E5] hover:border-[#8B5CF6] transition-colors flex flex-col items-center gap-4"
+              className="p-6 rounded-2xl bg-card border border-border hover:border-primary transition-colors flex flex-col items-center gap-4"
             >
               <feature.icon className={cn("w-8 h-8", feature.color)} />
-              <span className="text-sm font-medium text-[#1A1A1A]">{feature.title}</span>
+              <span className="text-sm font-medium text-foreground">{feature.title}</span>
             </motion.div>
           ))}
         </div>

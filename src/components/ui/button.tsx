@@ -5,28 +5,19 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-slate-950 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform active:scale-[0.98]",
   {
     variants: {
       variant: {
-        // PRIMARY CTA - gradient indigo to purple
-        default: "rounded-xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white font-semibold shadow-lg shadow-indigo-500/30 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50",
-        // SECONDARY - transparent with border
-        secondary: "rounded-xl bg-transparent border-2 border-slate-500/30 text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
-        // OUTLINE - similar to secondary but lighter
-        outline: "rounded-xl border-2 border-slate-600/50 bg-transparent text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
-        // GHOST - minimal, for icon buttons and subtle actions
-        ghost: "rounded-lg bg-transparent text-slate-400 hover:bg-slate-800/50 hover:text-white",
-        // LINK - text button style
-        link: "text-slate-400 hover:text-indigo-400 underline-offset-4 hover:underline bg-transparent",
-        // DESTRUCTIVE
-        destructive: "rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-lg shadow-red-500/20",
-        // HERO variant - same as default but larger shadow
-        hero: "rounded-xl bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white font-semibold shadow-lg shadow-indigo-500/40 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/60",
-        // HERO OUTLINE - for secondary hero actions
-        heroOutline: "rounded-xl bg-transparent border-2 border-slate-600 text-slate-300 hover:border-indigo-500/50 hover:bg-indigo-500/10 hover:text-white",
-        // NEON - special effect button
-        neon: "rounded-xl relative bg-transparent border-2 border-indigo-500/50 text-indigo-400 hover:bg-indigo-500/10 hover:border-indigo-400",
+        default: "rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/30 hover:scale-105 hover:shadow-xl hover:bg-accent hover:shadow-primary/50",
+        secondary: "rounded-xl bg-secondary border border-border text-secondary-foreground hover:border-primary/50 hover:bg-primary/10",
+        outline: "rounded-xl border border-border bg-transparent text-foreground hover:border-primary/50 hover:bg-primary/10",
+        ghost: "rounded-lg bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
+        link: "text-muted-foreground hover:text-primary underline-offset-4 hover:underline bg-transparent",
+        destructive: "rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-lg shadow-destructive/20",
+        hero: "rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/40 hover:scale-105 hover:shadow-xl hover:bg-accent hover:shadow-primary/60",
+        heroOutline: "rounded-xl bg-transparent border border-border text-foreground hover:border-primary/50 hover:bg-primary/10",
+        neon: "rounded-xl relative bg-transparent border border-primary/50 text-primary hover:bg-primary/10 hover:border-primary",
       },
       size: {
         default: "h-12 px-8 py-4 text-base",

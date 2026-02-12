@@ -11,14 +11,14 @@ const categories = [
 
 export function ModelsSection() {
   return (
-    <section id="models" className="py-24 bg-white">
+    <section id="models" className="py-24 bg-background">
       <div className="container px-4 max-w-4xl mx-auto">
         
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl font-bold text-[#1A1A1A] mb-4 text-center"
+          className="text-3xl font-bold text-foreground mb-4 text-center"
         >
           Категории моделей
         </motion.h2>
@@ -28,7 +28,7 @@ export function ModelsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-[#666666] mb-12 text-center"
+          className="text-muted-foreground mb-12 text-center"
         >
           Более 100 AI-моделей для любых задач
         </motion.p>
@@ -41,11 +41,11 @@ export function ModelsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              className="p-6 bg-[#FAFAFA] hover:bg-white border border-[#E5E5E5] hover:border-[#8B5CF6] rounded-2xl cursor-pointer transition-all duration-200 flex flex-col items-center gap-3"
+              className="p-6 bg-card hover:bg-muted border border-border hover:border-primary rounded-2xl cursor-pointer transition-all duration-200 flex flex-col items-center gap-3"
             >
               <category.icon className={cn("w-8 h-8", category.color)} />
-              <span className="text-sm font-medium text-[#1A1A1A]">{category.title}</span>
-              <span className="text-xs text-[#999999]">{category.count} моделей</span>
+              <span className="text-sm font-medium text-foreground">{category.title}</span>
+              <span className="text-xs text-muted-foreground">{category.count} моделей</span>
             </motion.button>
           ))}
         </div>

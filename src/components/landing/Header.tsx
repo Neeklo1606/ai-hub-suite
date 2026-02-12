@@ -38,7 +38,7 @@ export function Header() {
     <>
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#8B5CF6] focus:text-white focus:rounded-lg"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg"
       >
         Перейти к содержимому
       </a>
@@ -46,20 +46,18 @@ export function Header() {
       <header 
         className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
           scrolled 
-            ? "bg-white/95 backdrop-blur-sm border-b border-[#E5E5E5]" 
-            : "bg-[#FAFAFA] border-b border-transparent"
+            ? "bg-background/95 backdrop-blur-sm border-b border-border" 
+            : "bg-background border-b border-transparent"
         }`}
         role="banner"
       >
         <div className="container px-4 max-w-7xl mx-auto h-full">
           <div className="flex items-center justify-between h-full">
             
-            {/* Logo */}
-            <Link to="/" className="text-xl font-semibold text-[#1A1A1A]" aria-label="AI Hub - Главная">
+            <Link to="/" className="text-xl font-semibold text-foreground" aria-label="AI Hub - Главная">
               AI Hub
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8" aria-label="Навигация">
               {navLinks.map((link) => (
                 <Link
@@ -67,8 +65,8 @@ export function Header() {
                   to={link.href}
                   className={`text-sm transition-colors ${
                     isActiveLink(link.href)
-                      ? "text-[#1A1A1A]"
-                      : "text-[#666666] hover:text-[#1A1A1A]"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                   aria-current={isActiveLink(link.href) ? "page" : undefined}
                 >
@@ -77,25 +75,23 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Desktop CTA */}
             <div className="hidden md:flex items-center gap-4">
               <Link 
                 to="/login"
-                className="text-sm text-[#666666] hover:text-[#1A1A1A] transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Войти
               </Link>
               <Link 
                 to="/register"
-                className="px-6 py-2 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-full text-sm text-white transition-colors"
+                className="px-6 py-2 bg-primary hover:bg-accent rounded-full text-sm text-primary-foreground transition-colors"
               >
                 Начать
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-[#666666] hover:text-[#1A1A1A] transition-colors"
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileMenuOpen}
@@ -105,7 +101,6 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -113,7 +108,7 @@ export function Header() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden bg-white border-b border-[#E5E5E5] overflow-hidden"
+              className="md:hidden bg-card border-b border-border overflow-hidden"
             >
               <nav className="container px-4 py-4 flex flex-col gap-1">
                 {navLinks.map((link) => (
@@ -122,26 +117,26 @@ export function Header() {
                     to={link.href}
                     className={`px-4 py-3 text-sm rounded-lg transition-colors ${
                       isActiveLink(link.href)
-                        ? "text-[#1A1A1A] bg-[#F5F5F5]"
-                        : "text-[#666666] hover:text-[#1A1A1A] hover:bg-[#F5F5F5]"
+                        ? "text-foreground bg-muted"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.label}
                   </Link>
                 ))}
-                <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-[#E5E5E5]">
+                <div className="flex flex-col gap-3 pt-4 mt-3 border-t border-border">
                   <Link 
                     to="/login" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-3 text-sm text-[#666666] hover:text-[#1A1A1A] text-center transition-colors"
+                    className="px-4 py-3 text-sm text-muted-foreground hover:text-foreground text-center transition-colors"
                   >
                     Войти
                   </Link>
                   <Link 
                     to="/register" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="px-6 py-3 bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-full text-sm text-white text-center transition-colors"
+                    className="px-6 py-3 bg-primary hover:bg-accent rounded-full text-sm text-primary-foreground text-center transition-colors"
                   >
                     Начать
                   </Link>
