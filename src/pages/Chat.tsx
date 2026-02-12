@@ -117,7 +117,7 @@ export default function Chat() {
         {/* Messages area - scrollable */}
         <div className="flex-1 min-h-0 overflow-y-auto" ref={scrollRef}>
           {messages.length === 0 ? (
-            // Welcome Screen
+            // Welcome Screen — prompts + input centered together
             <div className="h-full flex flex-col items-center justify-center p-4 sm:p-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -127,14 +127,16 @@ export default function Chat() {
                 <h1 className="text-xl sm:text-2xl font-medium text-foreground mb-1">
                   Чем могу помочь?
                 </h1>
-                <p className="text-sm text-muted-foreground mb-8">
+                <p className="text-sm text-muted-foreground mb-6">
                   Выберите задачу
                 </p>
               </motion.div>
 
-              {/* Scrolling prompt ribbons */}
-              <div className="w-full overflow-hidden space-y-3 max-w-3xl">
+              {/* Scrolling prompt ribbons with edge fade */}
+              <div className="w-full space-y-3 max-w-3xl mb-6">
                 <div className="relative overflow-hidden">
+                  <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-background to-transparent" />
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-background to-transparent" />
                   <div className="flex gap-2 animate-scroll-left w-max">
                     {[...topPrompts, ...topPrompts].map((text, i) => (
                       <button
@@ -148,6 +150,8 @@ export default function Chat() {
                   </div>
                 </div>
                 <div className="relative overflow-hidden">
+                  <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-r from-background to-transparent" />
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 z-10 bg-gradient-to-l from-background to-transparent" />
                   <div className="flex gap-2 animate-scroll-right w-max">
                     {[...bottomPrompts, ...bottomPrompts].map((text, i) => (
                       <button
@@ -160,6 +164,11 @@ export default function Chat() {
                     ))}
                   </div>
                 </div>
+              </div>
+
+              {/* Input inline in welcome */}
+              <div className="w-full max-w-3xl">
+                <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
               </div>
             </div>
           ) : (
@@ -197,10 +206,12 @@ export default function Chat() {
           )}
         </div>
 
-        {/* Input - fixed at bottom */}
-        <div className="shrink-0">
-          <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
-        </div>
+        {/* Input - fixed at bottom, only when messages exist */}
+        {messages.length > 0 && (
+          <div className="shrink-0">
+            <ChatInput onSend={handleSend} isLoading={isLoading} selectedModel={selectedModel} onSelectModel={setSelectedModel} />
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
