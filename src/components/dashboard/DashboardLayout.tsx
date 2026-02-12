@@ -86,13 +86,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           )}
 
           {/* Balance pill — hidden on mobile */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
             <span className="text-sm">💰</span>
             <span className="text-sm font-semibold text-foreground">1 255 ₽</span>
             <Button
-              variant="default"
+              variant="ghost"
               size="icon"
-              className="h-6 w-6 rounded-full p-0 ml-1"
+              className="h-6 w-6 rounded-full p-0 ml-1 bg-muted hover:bg-accent text-muted-foreground hover:text-accent-foreground"
             >
               <Plus className="w-3.5 h-3.5" />
             </Button>
