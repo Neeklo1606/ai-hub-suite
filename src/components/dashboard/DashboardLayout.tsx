@@ -72,17 +72,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main Content */}
       <main
         className={cn(
-          "flex-1 overflow-auto transition-all duration-300",
+          "flex-1 flex flex-col h-screen overflow-hidden transition-all duration-300",
           "lg:ml-0"
         )}
         style={{
           marginLeft: sidebarCollapsed ? '70px' : '240px',
         }}
       >
-        {/* Header with balance pill */}
-        <header className="sticky top-0 z-30 flex items-center justify-end px-4 py-3 bg-background/80 backdrop-blur-sm border-b border-border">
-        </header>
-
         {children}
       </main>
     </div>
