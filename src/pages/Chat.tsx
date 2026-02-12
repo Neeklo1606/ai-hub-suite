@@ -5,7 +5,7 @@ import { ChatInput } from "@/components/chat/ChatInput";
 import { ModelSelector } from "@/components/chat/ModelSelector";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Plus, History, Sparkles, MessageSquare, Trash2 } from "lucide-react";
+import { Plus, History, MessageSquare, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
