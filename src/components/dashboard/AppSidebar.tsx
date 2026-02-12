@@ -43,6 +43,7 @@ interface SidebarItem {
   href: string;
   children?: { label: string; href: string }[];
   badge?: string;
+  adminOnly?: boolean;
 }
 
 const sidebarItems: SidebarItem[] = [
@@ -70,29 +71,6 @@ const sidebarItems: SidebarItem[] = [
     ],
   },
   {
-    icon: Video,
-    label: "Видео",
-    href: "/dashboard/video",
-    badge: "New",
-    children: [
-      { label: "Sora", href: "/dashboard/video/sora" },
-      { label: "Runway Gen-3", href: "/dashboard/video/runway" },
-      { label: "Pika Labs", href: "/dashboard/video/pika" },
-      { label: "Kling AI", href: "/dashboard/video/kling" },
-    ],
-  },
-  {
-    icon: Music,
-    label: "Аудио",
-    href: "/dashboard/audio",
-    children: [
-      { label: "ElevenLabs", href: "/dashboard/audio/elevenlabs" },
-      { label: "Suno AI", href: "/dashboard/audio/suno" },
-      { label: "Voice Clone", href: "/dashboard/audio/voice" },
-      { label: "Whisper", href: "/dashboard/audio/whisper" },
-    ],
-  },
-  {
     icon: Code,
     label: "Код",
     href: "/dashboard/code",
@@ -104,8 +82,7 @@ const sidebarItems: SidebarItem[] = [
   },
   { icon: BarChart3, label: "Аналитика", href: "/dashboard/analytics" },
   { icon: Settings, label: "Настройки", href: "/dashboard/settings" },
-  { icon: Shield, label: "Админ", href: "/admin", badge: "Admin" },
-  { icon: FileText, label: "Документация", href: "/docs" },
+  { icon: Shield, label: "Админ", href: "/admin", badge: "Admin", adminOnly: true },
 ];
 
 interface CollapsibleItemProps {
@@ -121,7 +98,7 @@ function CollapsibleItem({ item, isActive, pathname, collapsed, onNavigate }: Co
   const hasChildren = item.children && item.children.length > 0;
 
   const buttonClasses = cn(
-    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+    "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all",
     collapsed ? "justify-center px-2" : "",
     isActive
       ? "bg-sidebar-accent text-sidebar-accent-foreground"
@@ -233,7 +210,7 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
   const pathname = location.pathname;
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string; role?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [internalCollapsed, setInternalCollapsed] = useState(() => {
     const saved = localStorage.getItem('sidebar-collapsed');
@@ -250,6 +227,7 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
           setUser({
             name: userData.user_metadata?.name || userData.email?.split('@')[0] || 'User',
             email: userData.email || '',
+            role: userData.user_metadata?.role,
           });
         }
       } catch (error) {
@@ -300,7 +278,7 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
     <aside
       className={cn(
         "fixed left-0 top-0 h-screen flex flex-col bg-sidebar border-r border-sidebar-border z-40 transition-all duration-300",
-        collapsed ? "w-[70px]" : "w-[280px]"
+        collapsed ? "w-[70px]" : "w-[240px]"
       )}
     >
       {/* Logo */}
@@ -334,22 +312,24 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
 
       {/* Navigation - Scrollable */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-1">
-        {sidebarItems.map((item, index) => {
-          const isActive =
-            pathname === item.href ||
-            item.children?.some((child) => pathname === child.href);
+        {sidebarItems
+          .filter((item) => !item.adminOnly || user?.role === 'root')
+          .map((item, index) => {
+            const isActive =
+              pathname === item.href ||
+              item.children?.some((child) => pathname === child.href);
 
-          return (
-            <CollapsibleItem
-              key={index}
-              item={item}
-              isActive={!!isActive}
-              pathname={pathname}
-              collapsed={collapsed}
-              onNavigate={onNavigate}
-            />
-          );
-        })}
+            return (
+              <CollapsibleItem
+                key={index}
+                item={item}
+                isActive={!!isActive}
+                pathname={pathname}
+                collapsed={collapsed}
+                onNavigate={onNavigate}
+              />
+            );
+          })}
       </nav>
 
 
