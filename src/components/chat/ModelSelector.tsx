@@ -15,9 +15,7 @@ interface Model {
   provider: string;
   description: string;
   letter: string;
-  color: string;
   price: string;
-  badge?: string;
 }
 
 const models: Model[] = [
@@ -27,9 +25,7 @@ const models: Model[] = [
     provider: "OpenAI",
     description: "Самая мощная модель для сложных задач",
     letter: "G",
-    color: "bg-emerald-500",
     price: "от 0.15₽",
-    badge: "Popular",
   },
   {
     id: "claude-sonnet-4.5",
@@ -37,7 +33,6 @@ const models: Model[] = [
     provider: "Anthropic",
     description: "Лучшая для длинных текстов и анализа",
     letter: "C",
-    color: "bg-amber-500",
     price: "от 0.12₽",
   },
   {
@@ -46,7 +41,6 @@ const models: Model[] = [
     provider: "Google",
     description: "Быстрая и эффективная мультимодальная модель",
     letter: "G",
-    color: "bg-blue-500",
     price: "от 0.08₽",
   },
   {
@@ -55,9 +49,7 @@ const models: Model[] = [
     provider: "DeepSeek",
     description: "Сильная модель для рассуждений и кода",
     letter: "D",
-    color: "bg-violet-500",
     price: "от 0.05₽",
-    badge: "New",
   },
 ];
 
@@ -81,12 +73,7 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer">
-          <div
-            className={cn(
-              "w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px] shrink-0",
-              currentModel.color
-            )}
-          >
+          <div className="w-6 h-6 rounded bg-muted flex items-center justify-center text-muted-foreground font-bold text-[10px] shrink-0">
             {currentModel.letter}
           </div>
           <span className="text-sm font-medium text-foreground">{currentModel.name}</span>
@@ -95,9 +82,9 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
         </button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md p-0 gap-0 bg-popover">
+      <DialogContent className="sm:max-w-md p-0 gap-0 bg-card border-border">
         <DialogHeader className="p-4 pb-0">
-          <DialogTitle className="text-lg">Выберите модель</DialogTitle>
+          <DialogTitle className="text-lg text-foreground">Выберите модель</DialogTitle>
         </DialogHeader>
 
         <div className="px-4 py-3 border-b border-border">
@@ -108,7 +95,7 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
               placeholder="Поиск моделей..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-lg bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30"
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-muted border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30"
             />
           </div>
         </div>
@@ -125,31 +112,21 @@ export function ModelSelector({ selectedModel, onSelect }: ModelSelectorProps) {
                 }}
                 className={cn(
                   "w-full flex items-center gap-3 p-3 rounded-xl transition-colors text-left",
-                  isActive ? "bg-muted" : "hover:bg-muted/50"
+                  isActive
+                    ? "bg-muted border border-primary"
+                    : "bg-muted/40 hover:bg-muted border border-transparent"
                 )}
               >
-                <div
-                  className={cn(
-                    "w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm shrink-0",
-                    model.color
-                  )}
-                >
+                <div className="w-9 h-9 rounded-lg bg-border flex items-center justify-center text-muted-foreground font-bold text-sm shrink-0">
                   {model.letter}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-foreground">{model.name}</span>
-                    {model.badge && (
-                      <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-primary/10 text-primary">
-                        {model.badge}
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-sm font-semibold text-foreground">{model.name}</span>
                   <p className="text-xs text-muted-foreground mt-0.5">{model.description}</p>
-                  <p className="text-xs text-muted-foreground/70 mt-0.5">{model.price}</p>
+                  <p className="text-xs text-muted-foreground/60 mt-0.5">{model.price}</p>
                 </div>
                 {isActive && (
-                  <Check className="w-5 h-5 text-primary shrink-0" />
+                  <Check className="w-4 h-4 text-primary shrink-0" />
                 )}
               </button>
             );
