@@ -352,21 +352,6 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
         })}
       </nav>
 
-      {/* Balance - Fixed at bottom */}
-      {!collapsed && (
-        <div className="p-3 border-t border-sidebar-border shrink-0">
-          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-            <div className="flex items-center gap-2 mb-2">
-              <Wallet className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-sidebar-foreground">Баланс</span>
-            </div>
-            <div className="text-2xl font-bold text-sidebar-foreground">2,450 ₽</div>
-            <Button variant="hero" size="sm" className="w-full mt-3">
-              Пополнить
-            </Button>
-          </div>
-        </div>
-      )}
 
       {/* User Menu - Fixed at bottom */}
       <div className="p-3 border-t border-sidebar-border shrink-0">
