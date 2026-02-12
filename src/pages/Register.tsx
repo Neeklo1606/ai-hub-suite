@@ -34,20 +34,16 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await authService.register(formData);
+      await authService.register(formData);
       toast({
         title: "Регистрация успешна",
-        description: `Добро пожаловать, ${response.user.name}!`,
+        description: "Добро пожаловать!",
       });
       navigate("/dashboard");
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data?.errors?.email?.[0] ||
-        "Ошибка при регистрации";
       toast({
         title: "Ошибка регистрации",
-        description: errorMessage,
+        description: error.message || "Ошибка при регистрации",
         variant: "destructive",
       });
     } finally {
@@ -121,14 +117,14 @@ export default function Register() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Минимум 8 символов"
+                    placeholder="Минимум 6 символов"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
                     className="pl-10"
                     required
-                    minLength={8}
+                    minLength={6}
                     disabled={isLoading}
                   />
                 </div>
@@ -151,7 +147,7 @@ export default function Register() {
                     }
                     className="pl-10"
                     required
-                    minLength={8}
+                    minLength={6}
                     disabled={isLoading}
                   />
                 </div>

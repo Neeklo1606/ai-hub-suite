@@ -1,23 +1,20 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "@/services/authService";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Lock, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/landing/Header";
 
 export default function ResetPassword() {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
-  const email = searchParams.get("email");
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [hasSession, setHasSession] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: email || "",
-    token: token || "",
     password: "",
     password_confirmation: "",
   });
@@ -25,15 +22,20 @@ export default function ResetPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    if (!token || !email) {
-      toast({
-        title: "Ошибка",
-        description: "Неверная ссылка для сброса пароля",
-        variant: "destructive",
-      });
-      navigate("/forgot-password");
-    }
-  }, [token, email, navigate, toast]);
+    // Listen for the PASSWORD_RECOVERY event from the magic link
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setHasSession(true);
+      }
+    });
+
+    // Also check if we already have a session (user clicked the link)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setHasSession(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,10 +49,10 @@ export default function ResetPassword() {
       return;
     }
 
-    if (formData.password.length < 8) {
+    if (formData.password.length < 6) {
       toast({
         title: "Ошибка",
-        description: "Пароль должен содержать минимум 8 символов",
+        description: "Пароль должен содержать минимум 6 символов",
         variant: "destructive",
       });
       return;
@@ -65,13 +67,11 @@ export default function ResetPassword() {
         title: "Пароль изменен",
         description: "Ваш пароль успешно изменен",
       });
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
+      setTimeout(() => navigate("/dashboard"), 2000);
     } catch (error: any) {
       toast({
         title: "Ошибка",
-        description: error.response?.data?.message || "Не удалось изменить пароль",
+        description: error.message || "Не удалось изменить пароль",
         variant: "destructive",
       });
     } finally {
@@ -89,11 +89,11 @@ export default function ResetPassword() {
               <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
               <h1 className="text-2xl font-bold mb-2">Пароль изменен</h1>
               <p className="text-sm text-muted-foreground mb-6">
-                Ваш пароль успешно изменен. Перенаправление на страницу входа...
+                Ваш пароль успешно изменен. Перенаправление...
               </p>
-              <Link to="/login">
+              <Link to="/dashboard">
                 <Button variant="hero" className="w-full">
-                  Войти
+                  В дашборд
                 </Button>
               </Link>
             </div>
@@ -131,14 +131,14 @@ export default function ResetPassword() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Минимум 8 символов"
+                    placeholder="Минимум 6 символов"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
                     className="pl-10"
                     required
-                    minLength={8}
+                    minLength={6}
                     disabled={isLoading}
                   />
                 </div>
@@ -161,7 +161,7 @@ export default function ResetPassword() {
                     }
                     className="pl-10"
                     required
-                    minLength={8}
+                    minLength={6}
                     disabled={isLoading}
                   />
                 </div>

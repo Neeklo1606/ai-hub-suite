@@ -28,7 +28,7 @@ export default function ForgotPassword() {
     } catch (error: any) {
       toast({
         title: "Ошибка",
-        description: error.response?.data?.message || "Не удалось отправить письмо",
+        description: error.message || "Не удалось отправить письмо",
         variant: "destructive",
       });
     } finally {

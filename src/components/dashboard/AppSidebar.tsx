@@ -245,9 +245,12 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
   useEffect(() => {
     const loadUser = async () => {
       try {
-        if (authService.isAuthenticated()) {
-          const userData = await authService.getUser();
-          setUser(userData);
+        const userData = await authService.getUser();
+        if (userData) {
+          setUser({
+            name: userData.user_metadata?.name || userData.email?.split('@')[0] || 'User',
+            email: userData.email || '',
+          });
         }
       } catch (error) {
         console.error("Ошибка загрузки данных пользователя:", error);
