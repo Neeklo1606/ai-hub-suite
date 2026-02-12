@@ -15,7 +15,7 @@ const WaveformBars = () => (
     {[...Array(5)].map((_, i) => (
      <motion.div
         key={i}
-        className="w-1 bg-indigo-500 rounded-full"
+         className="w-1 bg-foreground/50 rounded-full"
         animate={{ height: ["8px", "24px", "12px", "20px", "8px"] }}
         transition={{ duration: 1, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
         aria-hidden="true"
@@ -36,22 +36,22 @@ export function VoiceAssistant() {
       role="region"
       aria-label="Голосовой помощник"
     >
-      <div className="p-6 bg-slate-800/30 rounded-2xl">
+      <div className="p-6 bg-card rounded-2xl border border-border">
         <div className="flex items-center gap-4 mb-6">
           <button
             onClick={() => setIsRecording(!isRecording)}
-            className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
+            className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
               isRecording
-                ? "bg-purple-600 shadow-lg"
-                : "bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg"
+                ? "bg-destructive"
+                : "bg-muted"
             }`}
             aria-label={isRecording ? "Остановить запись" : "Начать запись голоса"}
             aria-pressed={isRecording}
           >
             {isRecording ? (
-              <MicOff className="w-6 h-6 text-white" aria-hidden="true" />
+              <MicOff className="w-6 h-6 text-foreground" aria-hidden="true" />
             ) : (
-              <Mic className="w-6 h-6 text-white" aria-hidden="true" />
+              <Mic className="w-6 h-6 text-muted-foreground" aria-hidden="true" />
             )}
           </button>
 
@@ -67,7 +67,7 @@ export function VoiceAssistant() {
                   aria-live="polite"
                 >
                   <WaveformBars />
-                  <span className="text-base text-white font-medium">Слушаю...</span>
+                  <span className="text-base text-foreground font-medium">Слушаю...</span>
                 </motion.div>
               ) : (
                 <motion.span
@@ -75,7 +75,7 @@ export function VoiceAssistant() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-base text-gray-400"
+                  className="text-base text-muted-foreground"
                 >
                   Расскажите вашу задачу...
                 </motion.span>
@@ -89,14 +89,14 @@ export function VoiceAssistant() {
             <a
               key={index}
               href={action.href}
-              className="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 will-change-transform"
+              className="flex-shrink-0 flex flex-col items-center justify-center w-20 h-20 rounded-xl bg-muted hover:bg-accent transition-colors"
               role="listitem"
               aria-label={`Перейти к моделям для ${action.label}`}
             >
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center mb-2">
-                <action.icon className="w-4 h-4 text-indigo-400" aria-hidden="true" />
+              <div className="w-8 h-8 rounded-lg bg-card flex items-center justify-center mb-2">
+                <action.icon className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
               </div>
-              <span className="text-xs text-gray-400">{action.label}</span>
+              <span className="text-xs text-muted-foreground">{action.label}</span>
             </a>
           ))}
         </div>

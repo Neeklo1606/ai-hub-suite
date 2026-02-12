@@ -85,8 +85,8 @@ export default function ResetPassword() {
         <Header />
         <div className="flex items-center justify-center min-h-screen pt-16 px-4">
           <div className="w-full max-w-md">
-            <div className="bg-card border border-border rounded-2xl p-8 shadow-lg text-center">
-              <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <div className="bg-card border border-border rounded-xl p-6 shadow-sm text-center">
+              <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
               <h1 className="text-2xl font-bold mb-2">Пароль изменен</h1>
               <p className="text-sm text-muted-foreground mb-6">
                 Ваш пароль успешно изменен. Перенаправление...
@@ -108,7 +108,7 @@ export default function ResetPassword() {
       <Header />
       <div className="flex items-center justify-center min-h-screen pt-16 px-4">
         <div className="w-full max-w-md">
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-lg">
+          <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
             <div className="mb-6">
               <Link
                 to="/login"

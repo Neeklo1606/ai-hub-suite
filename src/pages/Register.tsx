@@ -56,7 +56,7 @@ export default function Register() {
       <Header />
       <div className="flex items-center justify-center min-h-screen pt-16 px-4">
         <div className="w-full max-w-md">
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-lg">
+          <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
             <div className="mb-6">
               <Link
                 to="/"
