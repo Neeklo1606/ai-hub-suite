@@ -51,7 +51,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-0 w-[280px]">
+        <SheetContent side="left" className="p-0 w-[240px]">
           <AppSidebar onNavigate={() => setOpen(false)} />
         </SheetContent>
       </Sheet>
@@ -63,7 +63,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           "lg:ml-0"
         )}
         style={{
-          marginLeft: sidebarCollapsed ? '70px' : '280px',
+          marginLeft: sidebarCollapsed ? '70px' : '240px',
         }}
       >
         {/* Header with balance pill */}
