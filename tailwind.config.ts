@@ -102,8 +102,8 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         shimmer: "shimmer 2s linear infinite",
-        "scroll-left": "scroll-left 20s linear infinite",
-        "scroll-right": "scroll-right 22s linear infinite",
+        "scroll-left": "scroll-left 45s linear infinite",
+        "scroll-right": "scroll-right 50s linear infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
