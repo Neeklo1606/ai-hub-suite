@@ -16,11 +16,18 @@ interface Message {
   timestamp: Date;
 }
 
-const welcomePrompts = [
-  { title: "Анализ договора", description: "Проверить условия и риски" },
-  { title: "Составить документ", description: "Иск, жалоба, заявление" },
-  { title: "Юридическая консультация", description: "Ответы на правовые вопросы" },
-  { title: "Анализ судебной практики", description: "Поиск релевантных решений" },
+const topPrompts = [
+  "Проверить договор на риски",
+  "Получить юридическую консультацию",
+  "Составить исковое заявление",
+  "Проанализировать судебную практику",
+];
+
+const bottomPrompts = [
+  "Сравнить версии договора",
+  "Объяснить статью закона",
+  "Подготовить возражение",
+  "Рассчитать сроки давности",
 ];
 
 export default function Chat() {
@@ -75,8 +82,8 @@ export default function Chat() {
     }, 1500);
   };
 
-  const handlePromptClick = (prompt: { title: string; description: string }) => {
-    handleSend(`${prompt.title} ${prompt.description}`);
+  const handlePromptClick = (text: string) => {
+    handleSend(text);
   };
 
   const clearChat = () => {
@@ -121,30 +128,43 @@ export default function Chat() {
                 <h1 className="text-xl sm:text-2xl font-medium text-foreground mb-1">
                   Чем могу помочь?
                 </h1>
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground mb-8">
                   Выберите задачу
                 </p>
-
-                <div className="grid grid-cols-2 gap-2">
-                  {welcomePrompts.map((prompt, index) => (
-                    <motion.button
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      onClick={() => handlePromptClick(prompt)}
-                      className="px-4 py-3 bg-card hover:bg-muted rounded-lg border border-border text-left transition-colors"
-                    >
-                      <div className="text-sm font-medium text-foreground">
-                        {prompt.title}
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {prompt.description}
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
               </motion.div>
+
+              {/* Scrolling prompt ribbons */}
+              <div className="w-full overflow-hidden space-y-3 max-w-3xl">
+                {/* Top ribbon - scrolls left */}
+                <div className="relative overflow-hidden">
+                  <div className="flex gap-2 animate-scroll-left w-max">
+                    {[...topPrompts, ...topPrompts].map((text, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handlePromptClick(text)}
+                        className="px-4 py-2 bg-card hover:bg-muted border border-border rounded-full text-sm text-foreground whitespace-nowrap transition-colors"
+                      >
+                        {text}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom ribbon - scrolls right */}
+                <div className="relative overflow-hidden">
+                  <div className="flex gap-2 animate-scroll-right w-max">
+                    {[...bottomPrompts, ...bottomPrompts].map((text, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handlePromptClick(text)}
+                        className="px-4 py-2 bg-card hover:bg-muted border border-border rounded-full text-sm text-foreground whitespace-nowrap transition-colors"
+                      >
+                        {text}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             // Messages
