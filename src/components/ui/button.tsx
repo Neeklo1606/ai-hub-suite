@@ -5,26 +5,26 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 will-change-transform active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/30 hover:scale-105 hover:shadow-xl hover:bg-accent hover:shadow-primary/50",
-        secondary: "rounded-xl bg-secondary border border-border text-secondary-foreground hover:border-primary/50 hover:bg-primary/10",
-        outline: "rounded-xl border border-border bg-transparent text-foreground hover:border-primary/50 hover:bg-primary/10",
+        default: "rounded-lg bg-primary text-primary-foreground hover:bg-primary/90",
+        secondary: "rounded-lg bg-secondary border border-border text-secondary-foreground hover:bg-muted",
+        outline: "rounded-lg border border-border bg-transparent text-foreground hover:bg-muted",
         ghost: "rounded-lg bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
         link: "text-muted-foreground hover:text-primary underline-offset-4 hover:underline bg-transparent",
-        destructive: "rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-lg shadow-destructive/20",
-        hero: "rounded-xl bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/40 hover:scale-105 hover:shadow-xl hover:bg-accent hover:shadow-primary/60",
-        heroOutline: "rounded-xl bg-transparent border border-border text-foreground hover:border-primary/50 hover:bg-primary/10",
-        neon: "rounded-xl relative bg-transparent border border-primary/50 text-primary hover:bg-primary/10 hover:border-primary",
+        destructive: "rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        hero: "rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90",
+        heroOutline: "rounded-lg bg-transparent border border-border text-foreground hover:bg-muted",
+        neon: "rounded-lg bg-transparent border border-primary/50 text-primary hover:bg-primary/10 hover:border-primary",
       },
       size: {
-        default: "h-12 px-8 py-4 text-base",
-        sm: "h-10 px-6 py-2 text-sm",
-        lg: "h-14 px-10 py-5 text-base font-semibold",
-        xl: "h-16 px-12 py-6 text-lg font-semibold",
-        icon: "h-10 w-10 rounded-lg",
+        default: "h-9 px-4 py-2 text-sm",
+        sm: "h-9 px-3 py-2 text-sm",
+        lg: "h-10 px-6 py-2 text-sm",
+        xl: "h-10 px-8 py-2 text-sm font-medium",
+        icon: "h-9 w-9 rounded-lg",
       },
     },
     defaultVariants: {

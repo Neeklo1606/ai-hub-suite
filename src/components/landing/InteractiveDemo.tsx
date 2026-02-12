@@ -19,9 +19,9 @@ const demoResponse = `Конечно! Вот продающий текст дл�
 Ваши клиенты заслуживают мгновенных ответов. Наша платформа обрабатывает запросы за 0.3 секунды...`;
 
 const modelTabs = [
-  { icon: MessageSquare, label: "Текст", emoji: "💬" },
-  { icon: Palette, label: "Картинка", emoji: "🎨" },
-  { icon: Code, label: "Код", emoji: "</>" },
+  { icon: MessageSquare, label: "Текст" },
+  { icon: Palette, label: "Картинка" },
+  { icon: Code, label: "Код" },
 ];
 
 const quickSuggestions = [
@@ -32,10 +32,10 @@ const quickSuggestions = [
 ];
 
 const models = [
-  { id: "gpt-4-turbo", name: "GPT-4 Turbo", icon: "⚡" },
-  { id: "claude-3", name: "Claude 3", icon: "🧠" },
-  { id: "gemini-pro", name: "Gemini Pro", icon: "✨" },
-  { id: "gpt-4o", name: "GPT-4o", icon: "🚀" },
+  { id: "gpt-4-turbo", name: "GPT-4 Turbo", icon: Sparkles },
+  { id: "claude-3", name: "Claude 3", icon: MessageSquare },
+  { id: "gemini-pro", name: "Gemini Pro", icon: Sparkles },
+  { id: "gpt-4o", name: "GPT-4o", icon: Send },
 ];
 
 // Typing indicator component
@@ -186,28 +186,11 @@ export function InteractiveDemo() {
     >
       {/* Main demo container */}
       <div 
-        className="relative rounded-3xl overflow-hidden"
-        style={{
-          boxShadow: "0 25px 80px -15px hsl(var(--primary) / 0.35), 0 0 60px -15px hsl(var(--primary) / 0.2)",
-        }}
+        className="relative rounded-2xl overflow-hidden border border-border"
       >
-        {/* Glass background */}
-        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-2xl" />
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10" />
-        
-        {/* Animated border glow */}
-        <div className="absolute inset-0 rounded-3xl border border-slate-700/40" />
-        <div 
-          className="absolute -inset-[1px] rounded-3xl opacity-60" 
-          style={{ 
-            background: "linear-gradient(135deg, hsl(var(--primary) / 0.3), transparent 50%, hsl(262 83% 58% / 0.3))",
-            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", 
-            maskComposite: "exclude", 
-            padding: "1px" 
-          }} 
-        />
+        <div className="absolute inset-0 bg-card" />
 
-        <div className="relative z-10 p-6 sm:p-8 lg:p-10">
+        <div className="relative z-10 p-6 sm:p-8">
           {/* Header: Tabs + Model Selector */}
           <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             {/* Tabs */}
@@ -217,13 +200,13 @@ export function InteractiveDemo() {
                   key={index}
                   onClick={() => setActiveTab(index)}
                   className={cn(
-                    "flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-base font-medium transition-all duration-300",
+                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
                     activeTab === index
-                      ? "bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-white border border-indigo-500/40 shadow-lg shadow-indigo-500/20"
-                      : "text-gray-400 hover:text-white hover:bg-slate-800/50"
+                      ? "bg-muted text-foreground border border-border"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                   )}
                 >
-                  <span className="text-lg">{tab.emoji}</span>
+                  <tab.icon className="w-4 h-4" />
                   <span className="hidden sm:inline">{tab.label}</span>
                 </button>
               ))}
@@ -233,13 +216,12 @@ export function InteractiveDemo() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowModelDropdown(!showModelDropdown)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-slate-800/80 to-slate-700/80 border border-slate-600/50 hover:border-primary/50 transition-all group"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted border border-border hover:bg-accent transition-colors"
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-lg">{selectedModel.icon}</span>
-                <span className="text-sm font-medium text-white">{selectedModel.name}</span>
+                <selectedModel.icon className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-foreground">{selectedModel.name}</span>
                 <ChevronDown className={cn(
-                  "w-4 h-4 text-gray-400 transition-transform",
+                  "w-4 h-4 text-muted-foreground transition-transform",
                   showModelDropdown && "rotate-180"
                 )} />
               </button>
@@ -247,11 +229,11 @@ export function InteractiveDemo() {
               <AnimatePresence>
                 {showModelDropdown && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl overflow-hidden z-50"
+                    className="absolute right-0 top-full mt-2 w-48 rounded-lg bg-card border border-border shadow-sm overflow-hidden z-50"
                   >
                     {models.map((model) => (
                       <button
@@ -261,13 +243,13 @@ export function InteractiveDemo() {
                           setShowModelDropdown(false);
                         }}
                         className={cn(
-                          "w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors",
+                          "w-full flex items-center gap-3 px-3 py-2.5 text-sm transition-colors",
                           selectedModel.id === model.id
-                            ? "bg-primary/20 text-white"
-                            : "text-gray-300 hover:bg-slate-700/50 hover:text-white"
+                            ? "bg-muted text-foreground"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
                         )}
                       >
-                        <span className="text-lg">{model.icon}</span>
+                        <model.icon className="w-4 h-4" />
                         <span>{model.name}</span>
                       </button>
                     ))}
@@ -280,8 +262,8 @@ export function InteractiveDemo() {
           {/* Input area */}
           <div className="relative mb-6">
             <div className={cn(
-              "flex items-center gap-3 p-4 sm:p-5 rounded-2xl bg-slate-800/50 border transition-all duration-300",
-              isUserMode ? "border-primary/50 ring-2 ring-primary/20" : "border-slate-700/50"
+              "flex items-center gap-3 p-3 rounded-lg bg-muted border transition-colors",
+              isUserMode ? "border-primary/50" : "border-border"
             )}>
               {/* Voice Recorder */}
               <VoiceRecorder 
@@ -292,8 +274,8 @@ export function InteractiveDemo() {
 
               <div className="flex-1 min-h-[32px] flex items-center">
                 {isRecording ? (
-                  <span className="text-gray-400 text-base sm:text-lg">
-                    Запись... нажмите ⏹ чтобы остановить
+                  <span className="text-muted-foreground text-sm">
+                    Запись... нажмите чтобы остановить
                   </span>
                 ) : isUserMode ? (
                   <input
@@ -303,7 +285,7 @@ export function InteractiveDemo() {
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSend()}
                     placeholder="Введите ваш запрос..."
-                    className="w-full bg-transparent text-white placeholder:text-gray-500 outline-none text-base sm:text-lg py-2"
+                    className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-sm py-2"
                     autoFocus
                   />
                 ) : (
@@ -311,18 +293,18 @@ export function InteractiveDemo() {
                     className="cursor-text py-2" 
                     onClick={handleInputFocus}
                   >
-                    <span className="text-white text-base sm:text-lg">
+                    <span className="text-foreground text-sm">
                       {displayedPrompt}
                       {isTyping && (
                         <motion.span
                           animate={{ opacity: [1, 0] }}
                           transition={{ duration: 0.5, repeat: Infinity }}
-                          className="inline-block w-0.5 h-6 bg-primary ml-1 align-middle"
+                          className="inline-block w-0.5 h-4 bg-foreground ml-1 align-middle"
                         />
                       )}
                     </span>
                     {!displayedPrompt && !isTyping && (
-                      <span className="text-gray-500 text-base sm:text-lg">Введите ваш запрос...</span>
+                      <span className="text-muted-foreground text-sm">Введите ваш запрос...</span>
                     )}
                   </div>
                 )}
@@ -331,10 +313,10 @@ export function InteractiveDemo() {
               {/* Send button */}
               <button 
                 onClick={handleSend}
-                className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/40 hover:shadow-indigo-500/60 hover:scale-105 transition-all"
+                className="flex-shrink-0 w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"
                 aria-label="Отправить запрос"
               >
-                <Send className="w-5 h-5" aria-hidden="true" />
+                <Send className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -348,7 +330,7 @@ export function InteractiveDemo() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 + index * 0.05 }}
                 onClick={() => handleQuickSuggestion(suggestion.prompt)}
-                className="px-4 py-2 rounded-full text-sm text-gray-400 bg-slate-800/50 border border-slate-700/50 hover:text-white hover:border-primary/50 hover:bg-gradient-to-r hover:from-indigo-500/10 hover:to-purple-500/10 transition-all"
+                className="px-4 py-2 rounded-full text-sm text-muted-foreground bg-card border border-border hover:text-foreground hover:bg-muted transition-colors"
               >
                 {suggestion.label}
               </motion.button>
@@ -364,10 +346,10 @@ export function InteractiveDemo() {
                 exit={{ opacity: 0, height: 0 }}
                 className="overflow-hidden"
               >
-                <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                <div className="p-3 rounded-lg bg-muted border border-border">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-white" />
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-card flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-muted-foreground" />
                     </div>
                     <TypingIndicator />
                   </div>
@@ -386,23 +368,23 @@ export function InteractiveDemo() {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                      <Sparkles className="w-5 h-5 text-white" aria-hidden="true" />
+                <div className="p-4 rounded-lg bg-muted border border-border">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-card flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-base font-semibold text-white">AI Hub</span>
-                        <span className="text-xs text-gray-500">{selectedModel.name}</span>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm font-medium text-foreground">AI Hub</span>
+                        <span className="text-xs text-muted-foreground">{selectedModel.name}</span>
                       </div>
-                      <div className="text-base text-gray-300 leading-relaxed whitespace-pre-wrap">
+                      <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                         {displayedResponse}
                         {displayedResponse.length < demoResponse.length && (
                           <motion.span
                             animate={{ opacity: [1, 0] }}
                             transition={{ duration: 0.3, repeat: Infinity }}
-                            className="inline-block w-0.5 h-5 bg-primary ml-1 align-middle"
+                            className="inline-block w-0.5 h-4 bg-foreground ml-1 align-middle"
                           />
                         )}
                       </div>
@@ -414,11 +396,11 @@ export function InteractiveDemo() {
           </AnimatePresence>
 
           {/* Footer */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mt-6 pt-4 border-t border-slate-700/30">
-            <span className="text-sm text-gray-500">
-              🎤 Голос или текст • ⚡ Мгновенный ответ
+          <div className="flex flex-wrap items-center justify-between gap-3 mt-6 pt-4 border-t border-border">
+            <span className="text-xs text-muted-foreground">
+              Голос или текст • Мгновенный ответ
             </span>
-            <span className="text-sm text-gray-500/60">100+ моделей доступно</span>
+            <span className="text-xs text-muted-foreground">100+ моделей доступно</span>
           </div>
         </div>
       </div>
