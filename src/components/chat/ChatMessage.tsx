@@ -3,16 +3,24 @@ import { User, Bot, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-interface ChatMessageProps {
+export interface ChatMessageData {
+  id: string;
   role: "user" | "assistant";
   content: string;
   model?: string;
   tokens?: number;
+  cost?: string;
   timestamp?: Date;
 }
 
-export function ChatMessage({ role, content, model, tokens, timestamp }: ChatMessageProps) {
+interface ChatMessageProps {
+  message: ChatMessageData;
+}
+
+export function ChatMessage({ message }: ChatMessageProps) {
+  const { role, content, model, tokens, cost, timestamp } = message;
   const [copied, setCopied] = useState(false);
+  const isUser = role === "user";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(content);
@@ -20,70 +28,63 @@ export function ChatMessage({ role, content, model, tokens, timestamp }: ChatMes
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const timeStr = timestamp
+    ? timestamp.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })
+    : null;
+
   return (
-    <div
-      className={cn(
-        "group flex gap-4 p-4 rounded-xl transition-colors",
-        role === "user" 
-          ? "bg-muted/30" 
-          : "bg-primary/5 border border-primary/10"
-      )}
-    >
+    <div className={cn("flex gap-3", isUser ? "flex-row-reverse" : "flex-row")}>
+      {/* Avatar */}
       <div
         className={cn(
-          "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-          role === "user"
-            ? "bg-secondary text-secondary-foreground"
+          "w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1",
+          isUser
+            ? "bg-primary/15 text-primary"
             : "bg-gradient-to-br from-primary to-secondary text-white"
         )}
       >
-        {role === "user" ? (
-          <User className="w-4 h-4" />
-        ) : (
-          <Bot className="w-4 h-4" />
-        )}
+        {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
       </div>
 
-      <div className="flex-1 space-y-2 overflow-hidden">
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-foreground">
-            {role === "user" ? "Вы" : model || "AI Assistant"}
-          </span>
-          {tokens && (
-            <span className="text-xs text-muted-foreground">
-              {tokens} токенов
-            </span>
-          )}
-          {timestamp && (
-            <span className="text-xs text-muted-foreground">
-              {timestamp.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })}
-            </span>
-          )}
-        </div>
+      {/* Bubble */}
+      <div
+        className={cn(
+          "group max-w-[75%] rounded-2xl px-4 py-3 shadow-sm",
+          isUser
+            ? "bg-primary/10"
+            : "bg-card border border-border"
+        )}
+      >
+        {!isUser && model && (
+          <p className="text-xs font-medium text-primary mb-1">{model}</p>
+        )}
 
-        <div className="prose prose-sm dark:prose-invert max-w-none">
-          <p className="whitespace-pre-wrap text-foreground/90 leading-relaxed">
-            {content}
-          </p>
-        </div>
+        <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+          {content}
+        </p>
 
-        {role === "assistant" && (
-          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        {/* Meta */}
+        <div
+          className={cn(
+            "flex items-center gap-2 mt-2 text-[11px] text-muted-foreground",
+            isUser ? "justify-end" : "justify-start"
+          )}
+        >
+          {timeStr && <span>{timeStr}</span>}
+          {tokens != null && <span>• {tokens} tok</span>}
+          {cost && <span>• {cost}</span>}
+
+          {!isUser && (
             <Button
               variant="ghost"
-              size="sm"
-              className="h-7 px-2 text-xs"
+              size="icon"
+              className="h-5 w-5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={handleCopy}
             >
-              {copied ? (
-                <Check className="w-3 h-3 mr-1" />
-              ) : (
-                <Copy className="w-3 h-3 mr-1" />
-              )}
-              {copied ? "Скопировано" : "Копировать"}
+              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
             </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
