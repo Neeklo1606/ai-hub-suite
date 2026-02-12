@@ -40,7 +40,7 @@ export function HeroSection() {
           transition={{ duration: 0.5 }}
           className="text-6xl md:text-7xl font-bold text-foreground mb-6 text-center leading-tight"
         >
-          AI Hub
+          Aura
         </motion.h1>
 
         <motion.p

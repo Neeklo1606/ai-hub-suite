@@ -19,7 +19,7 @@ export function Footer() {
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
           <Link to="/" className="text-lg font-semibold text-foreground">
-            AI Hub
+            Aura
           </Link>
           
           <div className="flex items-center gap-6">
@@ -50,7 +50,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            © 2026 AI Hub
+            © 2026 Aura. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <a href="#" className="hover:text-foreground transition-colors">

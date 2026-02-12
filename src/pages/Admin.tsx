@@ -187,7 +187,7 @@ export default function Admin() {
                     id="site-name"
                     value={settings.site.name}
                     onChange={(e) => updateSiteSetting('name', e.target.value)}
-                    placeholder="AI Hub"
+                    placeholder="Aura"
                   />
                 </div>
 

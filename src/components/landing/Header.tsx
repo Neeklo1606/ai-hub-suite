@@ -54,8 +54,8 @@ export function Header() {
         <div className="container px-4 max-w-7xl mx-auto h-full">
           <div className="flex items-center justify-between h-full">
             
-            <Link to="/" className="text-xl font-semibold text-foreground" aria-label="AI Hub - Главная">
-              AI Hub
+            <Link to="/" className="text-xl font-semibold text-foreground" aria-label="Aura - Главная">
+              Aura
             </Link>
 
             <nav className="hidden md:flex items-center gap-8" aria-label="Навигация">
