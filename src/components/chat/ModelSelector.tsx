@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Zap, Brain, GraduationCap, Search, Sparkles, Check } from "lucide-react";
 import {
   Popover,
@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Scenario {
   id: string;
@@ -67,23 +66,18 @@ export function ModelSelector({ selectedModel, onSelect, compact }: ModelSelecto
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        {compact ? (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className="h-9 w-9 rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors">
-                  <currentScenario.icon className="h-4 w-4 text-muted-foreground" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent><p>{currentScenario.title}</p></TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ) : (
-          <button className="flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors cursor-pointer">
-            <currentScenario.icon className="w-4 h-4 text-muted-foreground shrink-0" />
+        <button
+          className={cn(
+            "rounded-lg bg-card hover:bg-muted border border-border flex items-center justify-center transition-colors",
+            compact ? "h-9 w-9" : "h-9 gap-2 px-3"
+          )}
+          title={currentScenario.title}
+        >
+          <currentScenario.icon className="h-4 w-4 text-muted-foreground" />
+          {!compact && (
             <span className="text-sm font-medium text-foreground">{currentScenario.title}</span>
-          </button>
-        )}
+          )}
+        </button>
       </PopoverTrigger>
 
       <PopoverContent
