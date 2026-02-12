@@ -168,13 +168,7 @@ export default function Chat() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                     >
-                      <ChatMessage
-                        role={message.role}
-                        content={message.content}
-                        model={message.model}
-                        tokens={message.tokens}
-                        timestamp={message.timestamp}
-                      />
+                      <ChatMessage message={message} />
                     </motion.div>
                   ))}
                 </AnimatePresence>
