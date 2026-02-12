@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   MessageSquare,
@@ -9,9 +8,10 @@ import {
   Settings,
   ChevronLeft,
   User,
-  ChevronsUpDown,
   LogOut,
   Loader2,
+  LifeBuoy,
+  MoreVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -207,39 +207,38 @@ export function AppSidebar({ onNavigate, collapsed: externalCollapsed, onToggleC
                 )}
               </div>
               {!collapsed && (
-                <>
-                  <div className="flex-1 text-left min-w-0">
-                    <div className="text-sm text-sidebar-foreground truncate">
-                      {isLoading ? "..." : user?.email || "user@example.com"}
-                    </div>
+                <div className="flex-1 text-left min-w-0">
+                  <div className="text-sm text-sidebar-foreground truncate">
+                    {isLoading ? "..." : user?.name || "User"}
                   </div>
-                  <ChevronsUpDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                </>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {isLoading ? "" : user?.email || ""}
+                  </div>
+                </div>
+              )}
+              {!collapsed && (
+                <MoreVertical className="w-4 h-4 text-muted-foreground shrink-0" />
               )}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>{isLoading ? "Загрузка..." : user?.name || "Аккаунт"}</DropdownMenuLabel>
-            {user && (
-              <>
-                <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">{user.email}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-              </>
-            )}
-            <DropdownMenuItem>Профиль</DropdownMenuItem>
-            <DropdownMenuItem>Настройки</DropdownMenuItem>
+          <DropdownMenuContent side="top" align="start" className="w-56 mb-1">
+            <DropdownMenuItem asChild>
+              <Link to="/dashboard/settings" className="flex items-center gap-2 cursor-pointer">
+                <Settings className="w-4 h-4" />
+                Настройки
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+              <LifeBuoy className="w-4 h-4" />
+              Поддержка
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive cursor-pointer" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
+            <DropdownMenuItem className="text-destructive cursor-pointer flex items-center gap-2" onClick={handleLogout}>
+              <LogOut className="w-4 h-4" />
               Выйти
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {!collapsed && (
-          <Button variant="ghost" size="icon" className="w-full mt-1 h-7" onClick={handleToggleCollapse}>
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-        )}
       </div>
     </aside>
   );
