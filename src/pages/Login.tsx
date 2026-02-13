@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { authService, LoginData } from "@/services/authService";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Mail, Lock, ArrowLeft } from "lucide-react";
-import { Header } from "@/components/landing/Header";
+
 
 export default function Login() {
   const [formData, setFormData] = useState<LoginData>({
@@ -41,8 +41,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <div className="flex items-center justify-center min-h-screen pt-16 px-4">
+      <div className="flex items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-md">
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
             <div className="mb-6">

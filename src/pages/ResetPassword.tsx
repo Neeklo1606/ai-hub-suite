@@ -7,7 +7,7 @@ import { authService } from "@/services/authService";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Lock, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { Header } from "@/components/landing/Header";
+
 
 export default function ResetPassword() {
   const navigate = useNavigate();
@@ -82,8 +82,7 @@ export default function ResetPassword() {
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-background">
-        <Header />
-        <div className="flex items-center justify-center min-h-screen pt-16 px-4">
+        <div className="flex items-center justify-center min-h-screen px-4">
           <div className="w-full max-w-md">
             <div className="bg-card border border-border rounded-xl p-6 shadow-sm text-center">
               <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
@@ -105,8 +104,7 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <div className="flex items-center justify-center min-h-screen pt-16 px-4">
+      <div className="flex items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-md">
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
             <div className="mb-6">
