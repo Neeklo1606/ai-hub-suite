@@ -9,9 +9,7 @@ import Landing from "./pages/Landing";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
-import Docs from "./pages/Docs";
 import Chat from "./pages/Chat";
-import ImageGeneration from "./pages/ImageGeneration";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -27,20 +25,24 @@ const App = () => (
         <Toaster />
         <Sonner />
         <Routes>
+          {/* Public */}
           <Route path="/" element={<Landing />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+
+          {/* Protected */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/dashboard/text/*" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
-          <Route path="/dashboard/images" element={<ProtectedRoute><ImageGeneration /></ProtectedRoute>} />
-          <Route path="/dashboard/images/*" element={<ProtectedRoute><ImageGeneration /></ProtectedRoute>} />
           <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+
+          {/* Admin */}
           <Route path="/admin" element={<AdminProtectedRoute><Admin /></AdminProtectedRoute>} />
-          <Route path="/docs" element={<Docs />} />
+
+          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </TooltipProvider>
